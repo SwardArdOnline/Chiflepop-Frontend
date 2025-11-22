@@ -1,0 +1,19 @@
+<div class="sidebar-overlay" (click)="toggleSidebar()" [class.active]="sidebarOpen"></div>
+
+<div class="sidebar" [class.open]="sidebarOpen">
+  <div class="sidebar-header">
+    <span class="sidebar-title">Panel</span>
+    <button class="close-btn" (click)="toggleSidebar()">✖</button>
+  </div>
+  <ul class="sidebar-menu">
+    <li class="menu-section">Cuenta Bancaria</li>
+    <li class="menu-item" ><button (click)="irABancos()">➤Cuentas Bancarias</button></li>
+
+    <li class="menu-section">Productos</li>
+    <li class="menu-item" ><button (click)="irAProductos()">➤ Lista de productos</button></li>
+  </ul>
+</div>
+
+<button class="sidebar-trigger" (click)="toggleSidebar()">
+  <span class="icon">☰</span> Menú
+</button>   

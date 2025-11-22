@@ -1,0 +1,61 @@
+<div class="checkout-container">
+  <section class="items-box">
+    <h2>🛍️ Tu Pedido</h2>
+    @if (cartItems.length > 0) { @for (item of cartItems; track $index) {
+    <div class="item">
+      <img
+        src="https://fakeimg.pl/80x80/?text={{item.producto.nombre[0]}}"
+        alt="producto"
+      />
+
+      <div>
+        <strong>{{ item.producto.nombre }}</strong>
+        <p>Cantidad: {{ item.cantidad }}</p>
+        <p>S/ {{ item.producto.precio * item.cantidad }}</p>
+      </div>
+    </div>
+    } } @else {
+    <p class="empty">🛒 El carrito está vacío</p>
+    }
+  </section>
+  <aside class="summary">
+    <h3>Resumen</h3>
+    <p class="total">Total: <strong>S/ {{ total }}</strong></p>
+    @if (selectedCuenta) {
+    <div class="cuenta">
+      <p><strong>Método seleccionado:</strong></p>
+      <p>
+        {{ selectedCuenta.banco }} • {{ selectedCuenta.numero }} ({{
+        selectedCuenta.tipo }})
+      </p>
+    </div>
+    } @else {
+    <p class="no-method">⚠ No has seleccionado un método de pago</p>
+    }
+    <button class="btn-select" (click)="openPaymentModal()">
+      Seleccionar método de pago
+    </button>
+    <button class="btn-pay" [disabled]="!selectedCuenta" (click)="pagar()">
+      Confirmar Pago 💳
+    </button>
+  </aside>
+</div>
+@if (showPaymentModal) {
+<div class="modal-overlay">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h3>Seleccionar Cuenta Bancaria</h3>
+      <button class="close" (click)="closePaymentModal()">✖</button>
+    </div>
+    <div class="modal-body">
+      @for (cuenta of cuentas; track $index) {
+      <button class="cuenta-item" (click)="seleccionarCuenta(cuenta)">
+        <strong>{{ cuenta.banco }}</strong>
+        <span>{{ cuenta.numero }}</span>
+        <span>({{ cuenta.tipo }})</span>
+      </button>
+      }
+    </div>
+  </div>
+</div>
+}

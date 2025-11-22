@@ -1,0 +1,32 @@
+<button class="cart-btn" (click)="toggleSidebar()">
+  🛒 {{ cartService.getCount() }}
+</button>
+<div class="sidebar" [class.active]="open">
+
+  <div class="header">
+    <h3>Carrito</h3>
+    <button class="close-btn" (click)="closeSidebar()">✖</button>
+  </div>
+
+  @if (cartService.getCart().length > 0) {
+      <ul>
+        @for (item of cartService.getCart(); track $index; let i = $index) {
+          <li>
+            <strong>{{ item.product.nombre }}</strong>
+            <br>
+            Cant: {{ item.quantity }} — ${{ item.product.precio * item.quantity }}
+            <button (click)="removeItem(i)">❌</button>
+          </li>
+        }
+      </ul>
+  } @else {
+      <p>🛒 Carrito vacío</p>
+  }
+
+  <div class="footer">
+  <p>Total: <strong>${{ cartService.getTotal() }}</strong></p>
+
+  <button class="checkout-btn" (click)="submitCart()">Pagar</button>
+  <button class="clear-btn" (click)="clearCart()">Vaciar carrito</button>
+</div>
+</div>

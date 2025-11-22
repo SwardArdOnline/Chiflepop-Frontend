@@ -1,0 +1,65 @@
+import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
+import { AuthService } from '../../services/auth-service';
+
+@Component({
+  selector: 'app-register',
+  standalone: true,
+  imports: [CommonModule, FormsModule],
+  templateUrl: './register.component.html',
+  styleUrls: ['./register.component.css']
+})
+export class RegisterComponent {
+  name = '';
+  email = '';
+  password = '';
+  confirmPassword = '';
+  showPassword = false;
+  showConfirmPassword = false;
+  isLoading = false;
+  acceptTerms = false;
+
+  constructor(private router: Router, private authService: AuthService) {}
+
+  togglePassword() {
+    this.showPassword = !this.showPassword;
+  }
+
+  toggleConfirmPassword() {
+    this.showConfirmPassword = !this.showConfirmPassword;
+  }
+
+  goToLogin() {
+    this.router.navigate(['/login']);
+  }
+
+  goToHome() {
+    this.router.navigate(['/']);
+  }
+
+  onSubmit() {
+    if (this.password !== this.confirmPassword) {
+      alert('Las contraseñas no coinciden');
+      return;
+    }
+
+    if (!this.acceptTerms) {
+      alert('Debes aceptar los términos y condiciones');
+      return;
+    }
+    this.isLoading = true;
+    this.authService.register(this.name, this.email, this.password).subscribe({
+      next: (response: any) => {
+        console.log('Registro exitoso:', response);
+        this.isLoading = false;
+        this.router.navigate(['/dashboard']);
+      },
+      error: (error) => {
+        console.error('Error en el registro:', error);
+        this.isLoading = false;
+      }
+    });
+  }
+}

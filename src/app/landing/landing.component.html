@@ -1,0 +1,74 @@
+<div class="landing-container">
+  <header class="header">
+    <div class="header-content">
+      <div class="logo">
+        <span class="logo-icon">🍌</span>
+        <span class="logo-text">ChiflePop</span>
+      </div>
+      <nav class="nav-buttons">
+        <button class="btn-secondary" (click)="navigateToLogin()">Iniciar Sesión</button>
+        <button class="btn-primary" (click)="navigateToRegister()">Registrarse</button>
+      </nav>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="hero-content">
+      <h1 class="hero-title">
+        Los Mejores Chifles
+        <span class="highlight">Directo a tu Puerta</span>
+      </h1>
+      <p class="hero-subtitle">
+        Disfruta del sabor auténtico de los chifles.
+        Crujientes, deliciosos y 100% naturales.
+      </p>
+      <div class="hero-buttons">
+        <button class="btn-large btn-primary" (click)="navigateToRegister()">
+          Comenzar Ahora
+        </button>
+        <button class="btn-large btn-outline">
+          Ver Productos
+        </button>
+      </div>
+    </div>
+    <div class="hero-image">
+      <div class="floating-card card-1">
+        <span class="card-emoji">🍌</span>
+        <p class="card-text">Sabor Original</p>
+      </div>
+      <div class="floating-card card-2">
+        <span class="card-emoji">🌶️</span>
+        <p class="card-text">Picante</p>
+      </div>
+      <div class="floating-card card-3">
+        <span class="card-emoji">🧂</span>
+        <p class="card-text">Salado</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="features">
+    <h2 class="section-title">¿Por qué ChiflePop?</h2>
+    <div class="features-grid">
+      <div class="feature-card" *ngFor="let feature of features">
+        <div class="feature-icon">{{ feature.icon }}</div>
+        <h3 class="feature-title">{{ feature.title }}</h3>
+        <p class="feature-description">{{ feature.description }}</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta">
+    <div class="cta-content">
+      <h2 class="cta-title">¿Listo para Probar?</h2>
+      <p class="cta-subtitle">Únete a miles de amantes de los chifles</p>
+      <button class="btn-large btn-primary" (click)="navigateToRegister()">
+        Crear Cuenta Gratis
+      </button>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <p>&copy; 2025 ChiflePop. Todos los derechos reservados.</p>
+  </footer>
+</div>

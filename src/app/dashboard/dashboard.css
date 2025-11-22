@@ -1,0 +1,59 @@
+.layout-container {
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  min-height: 100vh;
+}
+
+.content {
+  padding: 24px;
+  overflow-y: auto;
+}
+@media (max-width: 768px) {
+  .layout-container {
+    grid-template-columns: 0 1fr;
+  }
+
+  app-sidebar.open {
+    position: fixed;
+    left: 0;
+    width: 260px;
+    height: 100vh;
+    z-index: 200;
+  }
+}
+.cart-btn {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  background: #007bff;
+  color: white;
+  border: none;
+  padding: 12px 18px;
+  font-size: 18px;
+  border-radius: 50px;
+  cursor: pointer;
+}
+
+.sidebar {
+  position: fixed;
+  top: 0;
+  right: -320px;
+  width: 300px;
+  height: 100%;
+  background: white;
+  color: #000;
+  border-left: 2px solid #ccc;
+  padding: 20px;
+  overflow-y: auto;
+  transition: 0.3s ease;
+}
+
+.sidebar.active {
+  right: 0;
+}
+
+.footer {
+  margin-top: 20px;
+  border-top: 1px solid #ddd;
+  padding-top: 15px;
+}

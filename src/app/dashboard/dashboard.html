@@ -1,0 +1,8 @@
+<div class="layout-container">
+  <app-sidebar></app-sidebar>
+
+  <main class="content">
+    <router-outlet></router-outlet>
+    <app-cart [open]="open" (openChange)="toggleSidebar()"></app-cart>
+  </main>
+</div>
