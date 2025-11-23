@@ -1,0 +1,49 @@
+<div class="max-w-6xl mx-auto">
+  <h1 class="text-3xl font-bold text-gray-800 mb-8">Usuarios Registrados</h1>
+
+  <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+    <table class="w-full text-left border-collapse">
+      <thead class="bg-gray-50 text-gray-600 uppercase text-xs font-bold">
+        <tr>
+          <th class="p-4">ID</th>
+          <th class="p-4">Nombre</th>
+          <th class="p-4">Email</th>
+          <th class="p-4">Rol</th>
+          <th class="p-4">Fecha Registro</th>
+          <th class="p-4 text-center">Acciones</th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-gray-100">
+        @for (cliente of clientes; track $index) {
+          <tr class="hover:bg-gray-50 transition">
+            <td class="p-4 text-gray-500">#{{ cliente.clienteId }}</td>
+            <td class="p-4 font-bold text-gray-800">
+              {{ cliente.nombre }}
+              @if(cliente.telefono) { <span class="block text-xs text-gray-400 font-normal">📞 {{ cliente.telefono }}</span> }
+            </td>
+            <td class="p-4 text-gray-600">{{ cliente.email }}</td>
+            <td class="p-4">
+              <span [class]="cliente.rol === 'ROLE_ADMIN' ? 'bg-purple-100 text-purple-700' : 'bg-green-100 text-green-700'" 
+                    class="px-3 py-1 rounded-full text-xs font-bold border border-opacity-20">
+                {{ cliente.rol === 'ROLE_ADMIN' ? 'ADMIN' : 'CLIENTE' }}
+              </span>
+            </td>
+            <td class="p-4 text-sm text-gray-500">{{ cliente.fechaRegistro | date:'short' }}</td>
+            <td class="p-4 text-center">
+              @if(cliente.rol !== 'ROLE_ADMIN') {
+                <button (click)="deleteCliente(cliente)" class="text-red-500 hover:text-red-700 font-semibold text-sm bg-red-50 px-3 py-1 rounded hover:bg-red-100 transition">
+                  Eliminar
+                </button>
+              } @else {
+                <span class="text-gray-300 text-xs">Protegido</span>
+              }
+            </td>
+          </tr>
+        }
+        @if(clientes.length === 0) {
+          <tr><td colspan="6" class="p-8 text-center text-gray-400">No hay usuarios registrados.</td></tr>
+        }
+      </tbody>
+    </table>
+  </div>
+</div>

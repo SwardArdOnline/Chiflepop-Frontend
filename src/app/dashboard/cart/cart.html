@@ -26,7 +26,7 @@
       <li class="bg-[#f4ffe5]/80 p-3 rounded-lg mb-3 shadow-md shadow-[#7CB342]/15 transition-all duration-250 text-base hover:bg-[#e0ffc6]/90 hover:translate-y-[-2px]">
         <strong class="text-base">{{ item.product.nombre }}</strong>
         <br />
-        <span class="text-sm">Cant: {{ item.quantity }} — ${{ (item.product.precio * item.quantity).toFixed(2) }}</span>
+        <span class="text-sm">Cant: {{ item.quantity }} — S./{{ (item.product.precio * item.quantity).toFixed(2) }}</span>
         <button class="bg-[#FBC02D] text-[#33691E] border-none rounded-md px-2 py-1 cursor-pointer text-sm mt-1 ml-2 transition-all duration-200 hover:bg-[#FDD835] hover:scale-105" (click)="removeItem(item.product.id)">
           ❌
         </button>
@@ -38,7 +38,7 @@
   }
 
   <div class="border-t-2 border-[#689F38]/20 pt-4 flex flex-col gap-3">
-    <p class="text-base">Total: <strong class="text-lg">${{ cartService.getTotal().toFixed(2) }}</strong></p>
+    <p class="text-base">Total: <strong class="text-lg">S./{{ cartService.getTotal().toFixed(2) }}</strong></p>
     <button class="w-full bg-gradient-to-br from-[#FDD835] to-[#FBC02D] text-[#33691E] border-none p-3 text-base rounded-xl cursor-pointer font-bold transition-all duration-250 shadow-xl shadow-[#FDD835]/35 hover:bg-gradient-to-br hover:from-[#FFEB3B] hover:to-[#FDD835] hover:translate-y-[-2px] hover:shadow-2xl hover:shadow-[#FDD835]/45" (click)="submitCart()">Pagar</button>
     <button class="w-full bg-[#ff5252] text-white border-none p-3 text-sm rounded-lg cursor-pointer transition-colors duration-250 hover:bg-[#ff1744]" (click)="clearCart()">Vaciar carrito</button>
   </div>

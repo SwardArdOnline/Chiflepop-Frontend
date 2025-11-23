@@ -10,4 +10,7 @@ export class DireccionService {
   getMisDirecciones(clienteId: number): Observable<any[]> {
     return this.http.get<any[]>(`${this.url}?clienteId=${clienteId}`);
   }
+  crearDireccion(clienteId: number, data: any): Observable<any> {
+    return this.http.post(`${this.url}?clienteId=${clienteId}`, data);
+  }
 }

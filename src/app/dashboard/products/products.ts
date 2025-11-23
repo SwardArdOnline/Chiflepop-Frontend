@@ -35,6 +35,6 @@ export class Products implements OnInit {
 
   agregar(producto: Producto) {
     this.carritoService.addProduct(producto);
-    alert(`¡${producto.nombre} agregado! 🍌`);
+    alert(`¡${producto.nombre} agregado!`);
   }
 }

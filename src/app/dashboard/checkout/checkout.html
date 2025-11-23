@@ -1,70 +1,95 @@
-<div class="flex flex-col lg:flex-row justify-between gap-8 p-6 max-w-7xl mx-auto">
-  
-  <section class="flex-grow lg:w-2/3 bg-white p-6 rounded-xl shadow-sm border border-gray-100">
-    <h2 class="text-2xl font-bold text-[#33691E] mb-6 border-b pb-4">🛍️ Resumen del Pedido</h2>
-    
-    @if (cartItems.length > 0) { 
-      @for (item of cartItems; track $index) {
-      <div class="flex items-center gap-4 p-4 border-b border-gray-100 last:border-0">
-        <div class="w-16 h-16 bg-gray-100 rounded-lg flex items-center justify-center text-2xl">
-          🍌
-        </div>
-        <div class="flex-1">
-          <strong class="text-lg text-gray-800">{{ item.product.nombre }}</strong>
-          <p class="text-sm text-gray-500">Cant: {{ item.quantity }}</p>
-        </div>
-        <p class="font-bold text-[#33691E]">S/ {{ (item.product.precio * item.quantity).toFixed(2) }}</p>
+<div
+  class="flex flex-col lg:flex-row justify-between gap-8 p-6 max-w-7xl mx-auto"
+>
+  <section
+    class="flex-grow lg:w-2/3 bg-white p-6 rounded-xl shadow-sm border border-gray-100"
+  >
+    <h2 class="text-2xl font-bold text-[#33691E] mb-6 border-b pb-4">
+      🛍️ Resumen del Pedido
+    </h2>
+
+    @if (cartItems.length > 0) { @for (item of cartItems; track $index) {
+    <div
+      class="flex items-center gap-4 p-4 border-b border-gray-100 last:border-0"
+    >
+      <div
+        class="w-16 h-16 bg-gray-100 rounded-lg flex items-center justify-center text-2xl"
+      >
+        🍌
       </div>
-      } 
-    } @else {
-      <p class="text-center py-10 text-gray-400">Tu carrito está vacío.</p>
+      <div class="flex-1">
+        <strong class="text-lg text-gray-800">{{ item.product.nombre }}</strong>
+        <p class="text-sm text-gray-500">Cant: {{ item.quantity }}</p>
+      </div>
+      <p class="font-bold text-[#33691E]">
+        S/ {{ (item.product.precio * item.quantity).toFixed(2) }}
+      </p>
+    </div>
+    } } @else {
+    <p class="text-center py-10 text-gray-400">Tu carrito está vacío.</p>
     }
   </section>
-  
+
   <aside class="w-full lg:w-1/3 flex flex-col gap-4">
-    
     <div class="bg-white p-5 rounded-xl shadow-sm border border-gray-100">
       <div class="flex justify-between items-center mb-3">
         <h3 class="font-bold text-gray-700">📍 Dirección de Entrega</h3>
-        <button class="text-sm text-[#558B2F] font-semibold hover:underline" (click)="openAddressModal()">Cambiar</button>
+        <button
+          class="text-sm text-[#558B2F] font-semibold hover:underline"
+          (click)="openAddressModal()"
+        >
+          Cambiar
+        </button>
       </div>
-      
+
       @if (selectedDireccion) {
-        <div class="p-3 bg-green-50 rounded-lg border border-green-100">
-          <p class="font-bold text-gray-800">{{ selectedDireccion.ciudad }}</p>
-          <p class="text-sm text-gray-600">{{ selectedDireccion.direccion }}</p>
-        </div>
+      <div class="p-3 bg-green-50 rounded-lg border border-green-100">
+        <p class="font-bold text-gray-800">{{ selectedDireccion.ciudad }}</p>
+        <p class="text-sm text-gray-600">{{ selectedDireccion.direccion }}</p>
+      </div>
       } @else {
-        <p class="text-red-500 text-sm">⚠ Selecciona una dirección</p>
+      <p class="text-red-500 text-sm">⚠ Selecciona una dirección</p>
       }
     </div>
 
     <div class="bg-white p-5 rounded-xl shadow-sm border border-gray-100">
       <div class="flex justify-between items-center mb-3">
         <h3 class="font-bold text-gray-700">💳 Método de Pago</h3>
-        <button class="text-sm text-[#558B2F] font-semibold hover:underline" (click)="openPaymentModal()">Cambiar</button>
+        <button
+          class="text-sm text-[#558B2F] font-semibold hover:underline"
+          (click)="openPaymentModal()"
+        >
+          Cambiar
+        </button>
       </div>
 
       @if (selectedCuenta) {
-        <div class="p-3 bg-blue-50 rounded-lg border border-blue-100">
-          <p class="font-bold text-gray-800">{{ selectedCuenta.banco }}</p>
-          <p class="text-sm text-gray-600">**** {{ selectedCuenta.numeroCuenta | slice:-4 }}</p>
-        </div>
+      <div class="p-3 bg-blue-50 rounded-lg border border-blue-100">
+        <p class="font-bold text-gray-800">{{ selectedCuenta.banco }}</p>
+        <p class="text-sm text-gray-600">
+          **** {{ selectedCuenta.numeroCuenta | slice:-4 }}
+        </p>
+      </div>
       } @else {
-        <p class="text-red-500 text-sm">⚠ Selecciona una tarjeta</p>
+      <p class="text-red-500 text-sm">⚠ Selecciona una tarjeta</p>
       }
     </div>
 
-    <div class="bg-white p-5 rounded-xl shadow-lg border border-green-100 sticky top-4">
+    <div
+      class="bg-white p-5 rounded-xl shadow-lg border border-green-100 sticky top-4"
+    >
       <div class="flex justify-between items-center mb-6">
         <span class="text-lg text-gray-600">Total a Pagar:</span>
-        <span class="text-3xl font-extrabold text-[#33691E]">S/ {{ total.toFixed(2) }}</span>
+        <span class="text-3xl font-extrabold text-[#33691E]"
+          >S/ {{ total.toFixed(2) }}</span
+        >
       </div>
 
-      <button 
+      <button
         class="w-full py-4 bg-gradient-to-r from-[#7CB342] to-[#558B2F] text-white font-bold rounded-xl shadow-lg transition-transform active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-xl"
         [disabled]="!selectedCuenta || !selectedDireccion || isLoading || cartItems.length === 0"
-        (click)="pagar()">
+        (click)="pagar()"
+      >
         {{ isLoading ? 'Procesando...' : 'Confirmar Pedido 🚀' }}
       </button>
     </div>
@@ -72,41 +97,115 @@
 </div>
 
 @if (showAddressModal) {
-<div class="fixed inset-0 bg-black/50 flex items-center justify-center z-50 backdrop-blur-sm" (click)="closeAddressModal()">
-  <div class="bg-white w-full max-w-md p-6 rounded-2xl shadow-2xl m-4" (click)="$event.stopPropagation()">
+<div
+  class="fixed inset-0 bg-black/50 flex items-center justify-center z-50 backdrop-blur-sm"
+  (click)="closeAddressModal()"
+>
+  <div
+    class="bg-white w-full max-w-md p-6 rounded-2xl shadow-2xl m-4"
+    (click)="$event.stopPropagation()"
+  >
     <h3 class="text-xl font-bold mb-4">Selecciona una dirección</h3>
     <div class="flex flex-col gap-3 max-h-[60vh] overflow-y-auto">
       @for (dir of direcciones; track $index) {
-        <button class="text-left p-4 rounded-xl border border-gray-200 hover:border-[#7CB342] hover:bg-green-50 transition-colors"
-                (click)="selectDireccion(dir)">
-          <p class="font-bold">{{ dir.ciudad }}</p>
-          <p class="text-sm text-gray-600">{{ dir.direccion }}</p>
-        </button>
+      <button
+        class="text-left p-4 rounded-xl border border-gray-200 hover:border-[#7CB342] hover:bg-green-50 transition-colors"
+        (click)="selectDireccion(dir)"
+      >
+        <p class="font-bold">{{ dir.ciudad }}</p>
+        <p class="text-sm text-gray-600">{{ dir.direccion }}</p>
+      </button>
+      } @if (direcciones.length === 0) {
+      <p class="text-center text-gray-500">
+        No tienes direcciones registradas.
+      </p>
       }
-      @if (direcciones.length === 0) {
-        <p class="text-center text-gray-500">No tienes direcciones registradas.</p>
-      }
+      <button
+        class="w-full py-3 mt-2 border-2 border-dashed border-[#7CB342] text-[#558B2F] font-bold rounded-xl hover:bg-green-50 flex items-center justify-center gap-2"
+        (click)="openCreateAddressModal()"
+      >
+        <span>+</span> Agregar Nueva Dirección
+      </button>
     </div>
-    <button class="mt-4 w-full py-2 text-gray-500 hover:text-gray-800" (click)="closeAddressModal()">Cancelar</button>
+    <button
+      class="mt-4 w-full py-2 text-gray-500 hover:text-gray-800"
+      (click)="closeAddressModal()"
+    >
+      Cancelar
+    </button>
   </div>
 </div>
-}
-
-@if (showPaymentModal) {
-<div class="fixed inset-0 bg-black/50 flex items-center justify-center z-50 backdrop-blur-sm" (click)="closePaymentModal()">
-  <div class="bg-white w-full max-w-md p-6 rounded-2xl shadow-2xl m-4" (click)="$event.stopPropagation()">
+} @if (showPaymentModal) {
+<div
+  class="fixed inset-0 bg-black/50 flex items-center justify-center z-50 backdrop-blur-sm"
+  (click)="closePaymentModal()"
+>
+  <div
+    class="bg-white w-full max-w-md p-6 rounded-2xl shadow-2xl m-4"
+    (click)="$event.stopPropagation()"
+  >
     <h3 class="text-xl font-bold mb-4">Selecciona un método de pago</h3>
     <div class="flex flex-col gap-3">
       @for (cta of cuentas; track $index) {
-        <button class="text-left p-4 rounded-xl border border-gray-200 hover:border-blue-500 hover:bg-blue-50 transition-colors"
-                (click)="selectCuenta(cta)">
-          <p class="font-bold">{{ cta.banco }}</p>
-          <p class="text-sm text-gray-600">**** {{ cta.numeroCuenta | slice:-4 }} ({{ cta.tipo }})</p>
-          <p class="text-xs text-[#33691E] font-bold">Saldo: S/ {{ cta.saldo }}</p>
-        </button>
+      <button
+        class="text-left p-4 rounded-xl border border-gray-200 hover:border-blue-500 hover:bg-blue-50 transition-colors"
+        (click)="selectCuenta(cta)"
+      >
+        <p class="font-bold">{{ cta.banco }}</p>
+        <p class="text-sm text-gray-600">
+          **** {{ cta.numeroCuenta | slice:-4 }} ({{ cta.tipo }})
+        </p>
+        <p class="text-xs text-[#33691E] font-bold">
+          Saldo: S/ {{ cta.saldo }}
+        </p>
+      </button>
       }
     </div>
-    <button class="mt-4 w-full py-2 text-gray-500 hover:text-gray-800" (click)="closePaymentModal()">Cancelar</button>
+    <button
+      class="mt-4 w-full py-2 text-gray-500 hover:text-gray-800"
+      (click)="closePaymentModal()"
+    >
+      Cancelar
+    </button>
+  </div>
+</div>
+}
+@if (showCreateAddressModal) {
+<div class="fixed inset-0 bg-black/60 flex items-center justify-center z-[2100] backdrop-blur-sm p-4" (click)="closeCreateAddressModal()">
+  <div class="bg-white w-full max-w-md rounded-2xl shadow-2xl overflow-hidden" (click)="$event.stopPropagation()">
+    
+    <div class="bg-[#33691E] p-5 text-white">
+      <h3 class="text-xl font-bold">Nueva Dirección</h3>
+      <p class="text-sm opacity-80">¿Dónde enviamos tus chifles?</p>
+    </div>
+
+    <div class="p-6 space-y-4">
+      <div>
+        <label class="block text-sm font-bold text-gray-700 mb-1">Dirección Exacta</label>
+        <input type="text" [(ngModel)]="nuevaDireccion.direccion" placeholder="Av. Larco 123, Dpto 401" class="w-full p-3 border border-gray-300 rounded-xl focus:border-[#7CB342] outline-none">
+      </div>
+
+      <div class="grid grid-cols-2 gap-4">
+        <div>
+          <label class="block text-sm font-bold text-gray-700 mb-1">Ciudad</label>
+          <input type="text" [(ngModel)]="nuevaDireccion.ciudad" class="w-full p-3 border border-gray-300 rounded-xl focus:border-[#7CB342] outline-none">
+        </div>
+        <div>
+          <label class="block text-sm font-bold text-gray-700 mb-1">Departamento</label>
+          <input type="text" [(ngModel)]="nuevaDireccion.departamento" class="w-full p-3 border border-gray-300 rounded-xl focus:border-[#7CB342] outline-none">
+        </div>
+      </div>
+
+      <div>
+        <label class="block text-sm font-bold text-gray-700 mb-1">Referencia (Opcional)</label>
+        <input type="text" [(ngModel)]="nuevaDireccion.referencia" placeholder="Frente al parque..." class="w-full p-3 border border-gray-300 rounded-xl focus:border-[#7CB342] outline-none">
+      </div>
+
+      <div class="flex gap-3 mt-6">
+        <button (click)="closeCreateAddressModal()" class="flex-1 py-3 rounded-xl border border-gray-300 text-gray-600 font-bold hover:bg-gray-50">Cancelar</button>
+        <button (click)="guardarDireccion()" class="flex-1 py-3 rounded-xl bg-[#7CB342] text-white font-bold hover:bg-[#689F38]">Guardar</button>
+      </div>
+    </div>
   </div>
 </div>
 }

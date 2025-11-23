@@ -7,6 +7,11 @@ import { Products } from "./dashboard/products/products";
 import { Accounts } from "./dashboard/accounts/accounts";
 import { Checkout } from "./dashboard/checkout/checkout";
 import { Home } from "./dashboard/home/home";
+import { Orders } from "./dashboard/orders/orders";
+import { AdminProducts } from "./admin/admin-products/admin-products";
+import { Admin } from "./admin/admin";
+import { AdminEmployees } from "./admin/admin-employees/admin-employees";
+import { AdminCustomers } from "./admin/admin-customers/admin-customers";
 
 export const routes: Routes = [
   { path: "", component: LandingComponent },
@@ -21,7 +26,18 @@ export const routes: Routes = [
       { path: "bank-accounts", component: Accounts },
       { path: "checkout", component: Checkout },
       { path: "", redirectTo: "home", pathMatch: "full" },
+      { path: "orders", component: Orders },
     ],
+  },
+  {
+    path: "admin",
+    component: Admin,
+    children: [
+      { path: "products", component: AdminProducts },
+      { path: "employees", component: AdminEmployees },
+      { path: "customers", component: AdminCustomers },
+      { path: "", redirectTo: "products", pathMatch: "full" }
+    ]
   },
   { path: "**", redirectTo: "" },
 ];

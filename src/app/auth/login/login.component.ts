@@ -33,20 +33,23 @@ export class LoginComponent {
 
   onSubmit() {
     this.isLoading = true;
+    
     this.authService.login(this.email, this.password).subscribe({
-      next: (response) => {
+      next: (response: any) => {
         console.log('Login exitoso:', response);
         this.isLoading = false;
         if (response.rol === 'ROLE_ADMIN') {
-          this.router.navigate(['/dashboard']); 
+          console.log('Usuario es Admin, redirigiendo al panel...');
+          this.router.navigate(['/admin/products']);
         } else {
+          console.log('Usuario es Cliente, redirigiendo a la tienda...');
           this.router.navigate(['/dashboard/home']);
         }
       },
       error: (error) => {
-        console.error('Error de login:', error);
+        console.error('Error en login:', error);
         this.isLoading = false;
-        alert('Credenciales incorrectas o error en el servidor');
+        alert('Credenciales incorrectas o error de conexión.');
       }
     });
   }

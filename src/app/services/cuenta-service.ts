@@ -14,4 +14,7 @@ export class CuentaService {
   getMisCuentas(clienteId: number): Observable<CuentaBancaria[]> {
     return this.http.get<CuentaBancaria[]>(`${this.url}?clienteId=${clienteId}`);
   }
+  crearCuenta(clienteId: number, data: any): Observable<any> {
+    return this.http.post(`${this.url}?clienteId=${clienteId}`, data);
+  }
 }

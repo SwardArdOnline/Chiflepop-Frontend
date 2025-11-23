@@ -14,6 +14,7 @@ import { AuthService } from '../../services/auth-service';
 export class RegisterComponent {
   name = '';
   email = '';
+  phone = '';
   password = '';
   confirmPassword = '';
   showPassword = false;
@@ -52,7 +53,7 @@ export class RegisterComponent {
     
     this.isLoading = true;
     
-    this.authService.register(this.name, this.email, this.password).subscribe({
+    this.authService.register(this.name, this.email, this.password, this.phone).subscribe({
       next: (response: any) => {
         alert('Cuenta creada con éxito. ¡Ahora inicia sesión!');
         this.isLoading = false;

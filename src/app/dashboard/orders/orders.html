@@ -1,0 +1,45 @@
+<div class="max-w-6xl mx-auto p-6">
+  <h2 class="text-3xl font-bold text-[#33691E] mb-6">📜 Historial de Pedidos</h2>
+
+  @if (loading) {
+    <p class="text-center text-gray-500 py-10">Cargando historial...</p>
+  } @else if (pedidos.length === 0) {
+    <div class="bg-yellow-50 border border-yellow-200 p-8 rounded-xl text-center">
+      <p class="text-yellow-800 font-medium text-lg">Aún no has realizado pedidos.</p>
+      <p class="text-sm text-yellow-600 mt-2">¡Corre a la tienda a probar nuestros chifles!</p>
+    </div>
+  } @else {
+    <div class="grid gap-6">
+      @for (p of pedidos; track $index) {
+        <div class="bg-white border border-gray-200 rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow">
+          
+          <div class="flex flex-col md:flex-row justify-between items-start md:items-center border-b border-gray-100 pb-4 mb-4">
+            <div>
+              <p class="text-xs text-gray-500 uppercase font-bold tracking-wider">Pedido #{{ p.id }}</p>
+              <p class="text-sm text-gray-700">{{ p.fecha | date:'medium' }}</p>
+            </div>
+            <div class="mt-2 md:mt-0 flex items-center gap-3">
+              <span class="px-3 py-1 rounded-full text-xs font-bold bg-blue-100 text-blue-700">
+                {{ p.estado }}
+              </span>
+              <span class="text-xl font-extrabold text-[#33691E]">S/ {{ p.total.toFixed(2) }}</span>
+            </div>
+          </div>
+
+          <div class="mb-4">
+            <p class="text-sm text-gray-600 font-medium mb-2">Productos:</p>
+            <ul class="list-disc list-inside text-sm text-gray-600 pl-2">
+              @for (d of p.detalles; track $index) {
+                <li>{{ d.cantidad }}x {{ d.producto }}</li>
+              }
+            </ul>
+          </div>
+
+          <div class="flex justify-between items-center pt-2">
+            <p class="text-xs text-gray-500">Enviado a: <span class="font-medium">{{ p.direccionEntrega }}</span></p>
+            </div>
+        </div>
+      }
+    </div>
+  }
+</div>

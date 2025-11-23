@@ -1,39 +1,44 @@
-import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { Router } from '@angular/router';
-import { CarritoService } from '../../services/carrito-service';
+import { Component, OnInit } from "@angular/core";
+import { CommonModule } from "@angular/common";
+import { Router } from "@angular/router";
+import { CarritoService } from "../../services/carrito-service";
 
-import { CartItem } from '../../interfaces/cartItem';
-import { CuentaBancaria } from '../../interfaces/cuentaBancaria';
-import { CuentaService } from '../../services/cuenta-service';
-import { DireccionService } from '../../services/direccion-service';
-import { PedidoService } from '../../services/pedido-service';
+import { CartItem } from "../../interfaces/cartItem";
+import { CuentaBancaria } from "../../interfaces/cuentaBancaria";
+import { CuentaService } from "../../services/cuenta-service";
+import { DireccionService } from "../../services/direccion-service";
+import { PedidoService } from "../../services/pedido-service";
+import { FormsModule } from "@angular/forms";
 
 @Component({
-  selector: 'app-checkout',
+  selector: "app-checkout",
   standalone: true,
-  imports: [CommonModule],
-  templateUrl: './checkout.html',
-  styleUrls: ['./checkout.css']
+  imports: [CommonModule, FormsModule],
+  templateUrl: "./checkout.html",
+  styleUrls: ["./checkout.css"],
 })
 export class Checkout implements OnInit {
   cartItems: CartItem[] = [];
   total: number = 0;
-  
-  // Modales
+
   showPaymentModal = false;
   showAddressModal = false;
 
-  // Datos del Backend
   cuentas: CuentaBancaria[] = [];
   direcciones: any[] = [];
 
-  // Selecciones del Usuario
   selectedCuenta: CuentaBancaria | null = null;
   selectedDireccion: any | null = null;
 
   isLoading = false;
-
+  nuevaDireccion = {
+    direccion: "",
+    ciudad: "Lima",
+    departamento: "Lima",
+    pais: "Perú",
+    referencia: "",
+  };
+  showCreateAddressModal = false;
   constructor(
     private cartService: CarritoService,
     private cuentaService: CuentaService,
@@ -53,56 +58,121 @@ export class Checkout implements OnInit {
   }
 
   loadUserData() {
-    const userId = Number(localStorage.getItem('userId'));
+    const userId = Number(localStorage.getItem("userId"));
     if (!userId) return;
-    this.cuentaService.getMisCuentas(userId).subscribe(data => {
+    this.cuentaService.getMisCuentas(userId).subscribe((data) => {
       this.cuentas = data;
-      this.selectedCuenta = this.cuentas.find(c => c.esPrincipal) || null;
+      this.selectedCuenta = this.cuentas.find((c) => c.esPrincipal) || null;
     });
 
-    this.direccionService.getMisDirecciones(userId).subscribe(data => {
+    this.direccionService.getMisDirecciones(userId).subscribe((data) => {
       this.direcciones = data;
-      this.selectedDireccion = this.direcciones.find(d => d.esPrincipal) || this.direcciones[0] || null;
+      this.selectedDireccion =
+        this.direcciones.find((d) => d.esPrincipal) ||
+        this.direcciones[0] ||
+        null;
     });
   }
 
   async pagar() {
     if (!this.selectedCuenta || !this.selectedDireccion) {
-      alert('⚠ Por favor selecciona una dirección y un método de pago.');
+      alert("⚠ Por favor selecciona una dirección y un método de pago.");
       return;
     }
 
     this.isLoading = true;
-    const userId = Number(localStorage.getItem('userId'));
+    const userId = Number(localStorage.getItem("userId"));
+
+    // --- DEBUG: Para ver qué se envía realmente ---
+    console.log("Cuenta ID:", this.selectedCuenta.id);
+    console.log("Dirección ID:", this.selectedDireccion.direccionEntregaId);
+    console.log("Producto Ejemplo:", this.cartItems[0]?.product);
 
     const compraRequest = {
+      // Dirección: Viene de la entidad, usa 'direccionEntregaId'
       direccionEntregaId: this.selectedDireccion.direccionEntregaId,
+      
+      // Cuenta: Viene del DTO, usa 'id'
       cuentaClienteId: this.selectedCuenta.id,
-      productos: this.cartItems.map(item => ({
-        productoId: item.product.id,
-        cantidad: item.quantity
-      }))
+      
+      productos: this.cartItems.map((item) => {
+        const prod = item.product as any; 
+        return {
+          productoId: prod.productoId || prod.id, // Busca 'productoId' primero
+          cantidad: item.quantity,
+        };
+      }),
     };
+
+    console.log("Enviando JSON:", compraRequest); // Verifícalo en la consola
 
     this.pedidoService.crearPedido(userId, compraRequest).subscribe({
       next: (res) => {
-        alert('¡Pedido realizado con éxito!');
+        alert("¡Pedido realizado con éxito!");
         this.cartService.clear();
-        this.router.navigate(['/dashboard/home']);
+        this.router.navigate(["/dashboard/home"]);
       },
       error: (err) => {
         console.error(err);
-        alert('Error: ' + (err.error || 'No se pudo procesar el pago'));
+        alert("Error: " + (err.error || "No se pudo procesar el pago"));
         this.isLoading = false;
-      }
+      },
     });
   }
 
-  openPaymentModal() { this.showPaymentModal = true; }
-  closePaymentModal() { this.showPaymentModal = false; }
-  selectCuenta(c: CuentaBancaria) { this.selectedCuenta = c; this.closePaymentModal(); }
+  guardarDireccion() {
+    const userId = Number(localStorage.getItem("userId"));
 
-  openAddressModal() { this.showAddressModal = true; }
-  closeAddressModal() { this.showAddressModal = false; }
-  selectDireccion(d: any) { this.selectedDireccion = d; this.closeAddressModal(); }
+    if (!this.nuevaDireccion.direccion) {
+      alert("Por favor ingresa la dirección exacta");
+      return;
+    }
+
+    this.direccionService
+      .crearDireccion(userId, this.nuevaDireccion)
+      .subscribe({
+        next: (dirCreada) => {
+          alert("¡Dirección guardada!");
+          this.direcciones.push(dirCreada);
+          this.selectedDireccion = dirCreada;
+          this.closeCreateAddressModal();
+          this.nuevaDireccion = {
+            direccion: "",
+            ciudad: "Lima",
+            departamento: "Lima",
+            pais: "Perú",
+            referencia: "",
+          };
+        },
+        error: (err) => alert("Error al guardar dirección"),
+      });
+  }
+  openCreateAddressModal() {
+    this.showCreateAddressModal = true;
+    this.closeAddressModal();
+  }
+  closeCreateAddressModal() {
+    this.showCreateAddressModal = false;
+  }
+  openPaymentModal() {
+    this.showPaymentModal = true;
+  }
+  closePaymentModal() {
+    this.showPaymentModal = false;
+  }
+  selectCuenta(c: CuentaBancaria) {
+    this.selectedCuenta = c;
+    this.closePaymentModal();
+  }
+
+  openAddressModal() {
+    this.showAddressModal = true;
+  }
+  closeAddressModal() {
+    this.showAddressModal = false;
+  }
+  selectDireccion(d: any) {
+    this.selectedDireccion = d;
+    this.closeAddressModal();
+  }
 }

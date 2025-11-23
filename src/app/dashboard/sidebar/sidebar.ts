@@ -34,7 +34,10 @@ export class Sidebar {
     this.router.navigate(["/dashboard/bank-accounts"]);
     this.closeSidebar();
   }
-
+  irAPedidos() {
+    this.router.navigate(["/dashboard/orders"]); 
+    this.closeSidebar();
+  }
   cerrarSesion() {
     this.authService.logout();
     this.router.navigate(["/login"]);

@@ -1,54 +1,100 @@
-<div 
-  class="fixed inset-0 bg-black/30 opacity-0 invisible transition-all duration-300 z-[199] md:hidden" 
-  (click)="toggleSidebar()" 
+<div
+  class="fixed inset-0 bg-black/30 opacity-0 invisible transition-all duration-300 z-[199] md:hidden"
+  (click)="toggleSidebar()"
   [class.opacity-100]="sidebarOpen"
   [class.visible]="sidebarOpen"
 ></div>
 
-<div 
-  class="fixed top-0 left-0 w-[260px] h-screen bg-white shadow-xl shadow-black/10 p-6 transform -translate-x-full transition-transform duration-350 z-[300] rounded-r-2xl md:static md:translate-x-0 md:h-full md:p-6 overflow-y-auto" 
+<div
+  class="fixed top-0 left-0 w-[260px] h-screen bg-white shadow-xl shadow-black/10 p-6 transform -translate-x-full transition-transform duration-350 z-[300] rounded-r-2xl md:static md:translate-x-0 md:h-full md:p-6 overflow-y-auto"
   [class.translate-x-0]="sidebarOpen"
 >
   <div class="flex justify-between items-center mb-7">
-    <span class="text-2xl font-extrabold bg-clip-text text-transparent bg-gradient-to-br from-[#689F38] to-[#FDD835]">Panel</span>
-    <button class="text-xl cursor-pointer md:hidden" (click)="toggleSidebar()">✖</button>
+    <span
+      class="text-2xl font-extrabold bg-clip-text text-transparent bg-gradient-to-br from-[#689F38] to-[#FDD835]"
+      >Panel</span
+    >
+    <button class="text-xl cursor-pointer md:hidden" (click)="toggleSidebar()">
+      ✖
+    </button>
   </div>
 
   <ul class="list-none p-0 m-0">
-    <li class="font-bold text-[#33691E] text-sm mt-5 mb-2 uppercase tracking-wider opacity-80">Principal</li>
-    
-    <li class="text-base p-3 rounded-xl cursor-pointer transition-all duration-300 text-[#558B2F] hover:bg-[#689F38]/10 hover:translate-x-1 hover:text-[#33691E] hover:font-semibold">
-      <button class="w-full text-left flex items-center gap-3" (click)="irAInicio()">
+    <li
+      class="font-bold text-[#33691E] text-sm mt-5 mb-2 uppercase tracking-wider opacity-80"
+    >
+      Principal
+    </li>
+
+    <li
+      class="text-base p-3 rounded-xl cursor-pointer transition-all duration-300 text-[#558B2F] hover:bg-[#689F38]/10 hover:translate-x-1 hover:text-[#33691E] hover:font-semibold"
+    >
+      <button
+        class="w-full text-left flex items-center gap-3"
+        (click)="irAInicio()"
+      >
         <span>🏠</span> Inicio
       </button>
     </li>
 
-    <li class="font-bold text-[#33691E] text-sm mt-6 mb-2 uppercase tracking-wider opacity-80">Gestión</li>
+    <li
+      class="font-bold text-[#33691E] text-sm mt-6 mb-2 uppercase tracking-wider opacity-80"
+    >
+      Gestión
+    </li>
 
-    <li class="text-base p-3 rounded-xl cursor-pointer transition-all duration-300 text-[#558B2F] hover:bg-[#689F38]/10 hover:translate-x-1 hover:text-[#33691E] hover:font-semibold">
-      <button class="w-full text-left flex items-center gap-3" (click)="irAProductos()">
+    <li
+      class="text-base p-3 rounded-xl cursor-pointer transition-all duration-300 text-[#558B2F] hover:bg-[#689F38]/10 hover:translate-x-1 hover:text-[#33691E] hover:font-semibold"
+    >
+      <button
+        class="w-full text-left flex items-center gap-3"
+        (click)="irAProductos()"
+      >
         <span>🍌</span> Productos
       </button>
     </li>
 
-    <li class="text-base p-3 rounded-xl cursor-pointer transition-all duration-300 text-[#558B2F] hover:bg-[#689F38]/10 hover:translate-x-1 hover:text-[#33691E] hover:font-semibold">
-      <button class="w-full text-left flex items-center gap-3" (click)="irABancos()">
+    <li
+      class="text-base p-3 rounded-xl cursor-pointer transition-all duration-300 text-[#558B2F] hover:bg-[#689F38]/10 hover:translate-x-1 hover:text-[#33691E] hover:font-semibold"
+    >
+      <button
+        class="w-full text-left flex items-center gap-3"
+        (click)="irABancos()"
+      >
         <span>💳</span> Cuentas Bancarias
       </button>
     </li>
+    <li
+      class="text-base p-3 rounded-xl cursor-pointer transition-all duration-300 text-[#558B2F] hover:bg-[#689F38]/10 hover:translate-x-1 hover:text-[#33691E] hover:font-semibold"
+    >
+      <button
+        class="w-full text-left flex items-center gap-3"
+        (click)="irAPedidos()"
+      >
+        <span>📜</span> Mis Pedidos
+      </button>
+    </li>
+    <li
+      class="font-bold text-[#33691E] text-sm mt-6 mb-2 uppercase tracking-wider opacity-80"
+    >
+      Usuario
+    </li>
 
-    <li class="font-bold text-[#33691E] text-sm mt-6 mb-2 uppercase tracking-wider opacity-80">Usuario</li>
-
-    <li class="text-base p-3 rounded-xl cursor-pointer transition-all duration-300 text-red-500 hover:bg-red-50 hover:translate-x-1 hover:font-semibold">
-      <button class="w-full text-left flex items-center gap-3" (click)="cerrarSesion()">
+    <li
+      class="text-base p-3 rounded-xl cursor-pointer transition-all duration-300 text-red-500 hover:bg-red-50 hover:translate-x-1 hover:font-semibold"
+    >
+      <button
+        class="w-full text-left flex items-center gap-3"
+        (click)="cerrarSesion()"
+      >
         <span>🚪</span> Cerrar Sesión
       </button>
     </li>
   </ul>
 </div>
 
-<button 
-  class="fixed top-6 left-6 p-3 rounded-2xl bg-gradient-to-br from-[#7CB342] to-[#689F38] text-white font-semibold cursor-pointer shadow-lg shadow-[#7CB342]/30 transition-all duration-300 flex items-center gap-2 z-50 md:hidden hover:translate-y-[-2px] hover:shadow-xl hover:shadow-[#7CB342]/40" 
+<button
+  class="fixed top-6 left-6 p-3 rounded-2xl bg-gradient-to-br from-[#7CB342] to-[#689F38] text-white font-semibold cursor-pointer shadow-lg shadow-[#7CB342]/30 transition-all duration-300 flex items-center gap-2 z-50 md:hidden hover:translate-y-[-2px] hover:shadow-xl hover:shadow-[#7CB342]/40"
   (click)="toggleSidebar()"
 >
   <span class="text-lg">☰</span> Menú
