@@ -1,3 +1,4 @@
+// src/app/services/carrito-service.ts
 import { Injectable } from "@angular/core";
 import { Producto } from "../interfaces/producto";
 
@@ -35,9 +36,8 @@ export class CarritoService {
     }
     this.saveCart();
   }
-
-  removeProduct(index: number) {
-    this.cart.splice(index, 1);
+  removeProduct(productId: number) {
+    this.cart = this.cart.filter(item => item.product.id !== productId);
     this.saveCart();
   }
 

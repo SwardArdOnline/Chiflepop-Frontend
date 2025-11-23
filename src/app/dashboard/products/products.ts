@@ -5,7 +5,6 @@ import { CarritoService } from "../../services/carrito-service";
   selector: "app-products",
   imports: [],
   templateUrl: "./products.html",
-  styleUrl: "./products.css",
 })
 export class Products {
   constructor(private carritoService: CarritoService) {}

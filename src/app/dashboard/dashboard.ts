@@ -8,7 +8,6 @@ import { CarritoService } from "../services/carrito-service";
   selector: "app-dashboard",
   imports: [Sidebar, RouterOutlet, Cart],
   templateUrl: "./dashboard.html",
-  styleUrl: "./dashboard.css",
 })
 export class Dashboard {
   open:boolean = false;

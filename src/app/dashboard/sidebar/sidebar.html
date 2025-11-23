@@ -1,19 +1,34 @@
-<div class="sidebar-overlay" (click)="toggleSidebar()" [class.active]="sidebarOpen"></div>
+<div 
+  class="fixed inset-0 bg-black/30 opacity-0 invisible transition-all duration-300 z-[199] md:hidden" 
+  (click)="toggleSidebar()" 
+  [class.opacity-100]="sidebarOpen"
+  [class.visible]="sidebarOpen"
+></div>
 
-<div class="sidebar" [class.open]="sidebarOpen">
-  <div class="sidebar-header">
-    <span class="sidebar-title">Panel</span>
-    <button class="close-btn" (click)="toggleSidebar()">✖</button>
+<div 
+  class="fixed top-0 left-0 w-[260px] h-screen bg-white shadow-xl shadow-black/10 p-6 transform -translate-x-full transition-transform duration-350 z-[300] rounded-r-2xl md:static md:translate-x-0 md:h-full md:p-6" 
+  [class.translate-x-0]="sidebarOpen"
+>
+  <div class="flex justify-between items-center mb-7">
+    <span class="text-2xl font-extrabold bg-clip-text text-transparent bg-gradient-to-br from-[#689F38] to-[#FDD835]">Panel</span>
+    <button class="text-xl cursor-pointer md:hidden" (click)="toggleSidebar()">✖</button>
   </div>
-  <ul class="sidebar-menu">
-    <li class="menu-section">Cuenta Bancaria</li>
-    <li class="menu-item" ><button (click)="irABancos()">➤Cuentas Bancarias</button></li>
+  <ul class="list-none p-0 m-0">
+    <li class="font-bold text-[#33691E] text-sm mt-5 mb-2">Cuenta Bancaria</li>
+    <li class="text-base p-3 rounded-xl cursor-pointer transition-all duration-300 text-[#558B2F] hover:bg-[#689F38]/10 hover:translate-x-1 hover:text-[#33691E] hover:font-semibold" >
+      <button class="w-full text-left" (click)="irABancos()">➤ Cuentas Bancarias</button>
+    </li>
 
-    <li class="menu-section">Productos</li>
-    <li class="menu-item" ><button (click)="irAProductos()">➤ Lista de productos</button></li>
+    <li class="font-bold text-[#33691E] text-sm mt-5 mb-2">Productos</li>
+    <li class="text-base p-3 rounded-xl cursor-pointer transition-all duration-300 text-[#558B2F] hover:bg-[#689F38]/10 hover:translate-x-1 hover:text-[#33691E] hover:font-semibold" >
+      <button class="w-full text-left" (click)="irAProductos()">➤ Lista de productos</button>
+    </li>
   </ul>
 </div>
 
-<button class="sidebar-trigger" (click)="toggleSidebar()">
-  <span class="icon">☰</span> Menú
-</button>   
+<button 
+  class="fixed top-6 left-6 p-3 rounded-2xl bg-gradient-to-br from-[#7CB342] to-[#689F38] text-white font-semibold cursor-pointer shadow-lg shadow-[#7CB342]/30 transition-all duration-300 flex items-center gap-2 z-50 md:hidden hover:translate-y-[-2px] hover:shadow-xl hover:shadow-[#7CB342]/40" 
+  (click)="toggleSidebar()"
+>
+  <span class="text-lg">☰</span> Menú
+</button>

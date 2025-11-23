@@ -8,20 +8,16 @@ import { CuentaBancaria } from '../../interfaces/cuentaBancaria';
   selector: 'app-checkout',
   imports: [],
   templateUrl: './checkout.html',
-  styleUrl: './checkout.css'
 })
 export class Checkout {
   cartItems: CartItem[] = [];
   total: number = 0;
-
   showPaymentModal: boolean = false;
-
   cuentas: CuentaBancaria[] = [
     { id: 1, banco: 'BCP', numero: '**** 2938', tipo: 'Débito' },
     { id: 2, banco: 'Interbank', numero: '**** 1182', tipo: 'Crédito' },
     { id: 3, banco: 'BBVA', numero: '**** 9921', tipo: 'Ahorros' },
   ];
-
   selectedCuenta: CuentaBancaria | null = null;
 
   constructor(private router: Router) {}
@@ -33,12 +29,24 @@ export class Checkout {
 
   loadCart() {
     const data = localStorage.getItem('cart');
-    this.cartItems = data ? JSON.parse(data) : [];
+    if (data) {
+      const parsedData = JSON.parse(data);
+      // Normalización de datos para compatibilidad
+      this.cartItems = parsedData.map((item: any) => ({
+        product: item.product || item.producto,
+        quantity: item.quantity || item.cantidad
+      }));
+    } else {
+      this.cartItems = [];
+    }
   }
 
   calculateTotal() {
     this.total = this.cartItems.reduce(
-      (acc, item) => acc + item.producto.precio * item.cantidad,
+      (acc, item) => {
+        const precio = item.product?.precio || 0;
+        return acc + precio * item.quantity;
+      },
       0
     );
   }
@@ -56,13 +64,8 @@ export class Checkout {
     this.showPaymentModal = false;
   }
 
-  @HostListener('document:click', ['$event'])
-  onOutsideClick(event: MouseEvent) {
-    const modal = document.querySelector('.modal-content');
-    
-    if (this.showPaymentModal && modal && !modal.contains(event.target as Node)) {
-      this.closePaymentModal();
-    }
+  goBack() {
+    this.router.navigate(['/dashboard/products']);
   }
 
   pagar() {
@@ -70,12 +73,8 @@ export class Checkout {
       alert('⚠ Debes seleccionar una cuenta antes de pagar.');
       return;
     }
-
-    alert(
-      `💰 Pago procesado con éxito usando: ${this.selectedCuenta.banco} (${this.selectedCuenta.numero})`
-    );
-
+    alert(`💰 Pago procesado con éxito usando: ${this.selectedCuenta.banco}`);
     localStorage.removeItem('cart');
-    this.router.navigate(['/orden-confirmada']);
+    this.router.navigate(['/dashboard']);
   }
 }

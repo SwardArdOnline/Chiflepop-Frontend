@@ -1,58 +1,60 @@
-<div class="checkout-container">
-  <section class="items-box">
-    <h2>🛍️ Tu Pedido</h2>
+<div class="flex flex-col lg:flex-row justify-between gap-8 p-6 max-w-7xl mx-auto bg-[#f8fdf4]">
+  <section class="flex-grow lg:w-2/3 bg-white p-5 rounded-xl shadow-lg shadow-[#7CB342]/15">
+    <h2 class="text-2xl font-bold text-[#33691E] mb-4">🛍️ Tu Pedido</h2>
     @if (cartItems.length > 0) { @for (item of cartItems; track $index) {
-    <div class="item">
+    <div class="flex items-center gap-4 p-3 border-b border-[#dce7cc]">
       <img
-        src="https://fakeimg.pl/80x80/?text={{item.producto.nombre[0]}}"
+        src="https://fakeimg.pl/80x80/?text={{item.product.nombre[0]}}"
         alt="producto"
+        class="rounded-lg w-[70px] h-[70px] object-cover"
       />
 
       <div>
-        <strong>{{ item.producto.nombre }}</strong>
-        <p>Cantidad: {{ item.cantidad }}</p>
-        <p>S/ {{ item.producto.precio * item.cantidad }}</p>
+        <strong class="text-base">{{ item.product.nombre }}</strong>
+        <p class="text-sm">Cantidad: {{ item.quantity }}</p>
+        <p class="text-sm">S/ {{ (item.product.precio * item.quantity).toFixed(2) }}</p>
       </div>
     </div>
     } } @else {
-    <p class="empty">🛒 El carrito está vacío</p>
+    <p class="text-center opacity-60 p-5">🛒 El carrito está vacío</p>
     }
   </section>
-  <aside class="summary">
-    <h3>Resumen</h3>
-    <p class="total">Total: <strong>S/ {{ total }}</strong></p>
+  
+  <aside class="w-full lg:w-1/3 bg-white p-5 rounded-xl sticky top-5 shadow-lg shadow-[#FDD835]/25 h-fit">
+    <h3 class="text-xl font-bold text-[#33691E] mb-3">Resumen</h3>
+    <p class="text-lg my-3 border-b pb-3 border-gray-200">Total: <strong class="font-bold">S/ {{ total.toFixed(2) }}</strong></p>
     @if (selectedCuenta) {
-    <div class="cuenta">
-      <p><strong>Método seleccionado:</strong></p>
-      <p>
+    <div class="p-3 bg-green-50 rounded-lg border border-green-200 mb-4">
+      <p class="font-bold mb-1">Método seleccionado:</p>
+      <p class="text-sm">
         {{ selectedCuenta.banco }} • {{ selectedCuenta.numero }} ({{
         selectedCuenta.tipo }})
       </p>
     </div>
     } @else {
-    <p class="no-method">⚠ No has seleccionado un método de pago</p>
+    <p class="text-red-600 mb-4 font-medium">⚠ No has seleccionado un método de pago</p>
     }
-    <button class="btn-select" (click)="openPaymentModal()">
+    <button class="w-full p-3 border-2 border-[#689F38] bg-transparent text-[#689F38] font-bold rounded-lg cursor-pointer transition-all duration-300 hover:bg-[#689F38] hover:text-white" (click)="openPaymentModal()">
       Seleccionar método de pago
     </button>
-    <button class="btn-pay" [disabled]="!selectedCuenta" (click)="pagar()">
+    <button class="w-full p-4 mt-4 bg-gradient-to-br from-[#FDD835] to-[#F9A825] border-none text-lg rounded-xl cursor-pointer text-[#33691E] font-bold transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed hover:scale-[1.01] hover:bg-gradient-to-br hover:from-[#FFEB3B] hover:to-[#FDD835]" [disabled]="!selectedCuenta" (click)="pagar()">
       Confirmar Pago 💳
     </button>
   </aside>
 </div>
 @if (showPaymentModal) {
-<div class="modal-overlay">
-  <div class="modal-content">
-    <div class="modal-header">
-      <h3>Seleccionar Cuenta Bancaria</h3>
-      <button class="close" (click)="closePaymentModal()">✖</button>
+<div class="fixed top-0 left-0 w-full h-full bg-black/40 flex justify-center items-center backdrop-blur-sm z-[1000]">
+  <div class="bg-white w-[350px] rounded-2xl p-5 shadow-2xl shadow-[#7CB342]/35">
+    <div class="flex justify-between items-center mb-4">
+      <h3 class="text-xl font-bold">Seleccionar Cuenta Bancaria</h3>
+      <button class="border-none bg-none text-2xl cursor-pointer" (click)="closePaymentModal()">✖</button>
     </div>
-    <div class="modal-body">
+    <div class="mt-4">
       @for (cuenta of cuentas; track $index) {
-      <button class="cuenta-item" (click)="seleccionarCuenta(cuenta)">
-        <strong>{{ cuenta.banco }}</strong>
-        <span>{{ cuenta.numero }}</span>
-        <span>({{ cuenta.tipo }})</span>
+      <button class="w-full border-2 border-[#689F38] bg-[#f7ffef] p-3 rounded-xl mb-3 cursor-pointer transition-colors duration-300 hover:bg-[#689F38] hover:text-white hover:translate-y-[-2px]" (click)="seleccionarCuenta(cuenta)">
+        <strong class="block text-base">{{ cuenta.banco }}</strong>
+        <span class="block text-sm">{{ cuenta.numero }}</span>
+        <span class="block text-xs">({{ cuenta.tipo }})</span>
       </button>
       }
     </div>

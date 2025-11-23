@@ -12,7 +12,6 @@ import { Router } from "@angular/router";
   selector: "app-cart",
   imports: [],
   templateUrl: "./cart.html",
-  styleUrl: "./cart.css",
 })
 export class Cart {
   @Input() disableAutoClose: boolean = false;
@@ -30,8 +29,8 @@ export class Cart {
     this.open = false;
     this.openChange.emit(this.open);
   }
-  removeItem(index: number) {
-    this.cartService.removeProduct(index);
+  removeItem(productId: number) {
+    this.cartService.removeProduct(productId);
   }
 
   clearCart() {
