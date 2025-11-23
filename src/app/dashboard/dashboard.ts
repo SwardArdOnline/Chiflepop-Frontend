@@ -14,6 +14,7 @@ export class Dashboard {
   constructor(public cartService: CarritoService) {}
 
   toggleSidebar() {
+    console.log(this.open);
     this.open = !this.open;
   }
 }

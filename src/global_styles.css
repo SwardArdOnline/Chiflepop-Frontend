@@ -8,15 +8,13 @@
 /* Base styles (migrados de los originales) */
 body {
   font-family: 'Inter', sans-serif;
-  /* Migrado de: background: #f8fdf4; color: #33691E; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; */
-  @apply bg-[#f8fdf4] text-[#33691E] antialiased min-h-screen overflow-x-hidden;
+  @apply bg-[#f8fdf4] text-[#33691E] antialiased min-h-screen;
 }
 
 html, body {
   height: 100%;
 }
 
-/* Scrollbar (debe mantenerse ya que Tailwind no lo soporta) */
 ::-webkit-scrollbar {
   width: 10px;
 }

@@ -6,6 +6,7 @@ import { Dashboard } from "./dashboard/dashboard";
 import { Products } from "./dashboard/products/products";
 import { Accounts } from "./dashboard/accounts/accounts";
 import { Checkout } from "./dashboard/checkout/checkout";
+import { Home } from "./dashboard/home/home";
 
 export const routes: Routes = [
   { path: "", component: LandingComponent },
@@ -15,10 +16,11 @@ export const routes: Routes = [
     path: "dashboard",
     component: Dashboard,
     children: [
+      { path: "home", component: Home },
       { path: "products", component: Products },
       { path: "bank-accounts", component: Accounts },
       { path: "checkout", component: Checkout },
-      { path: "", redirectTo: "productos", pathMatch: "full" },
+      { path: "", redirectTo: "home", pathMatch: "full" },
     ],
   },
   { path: "**", redirectTo: "" },

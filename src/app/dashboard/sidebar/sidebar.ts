@@ -18,6 +18,7 @@ export class Sidebar {
   closeSidebar() {
     this.sidebarOpen = false;
   }
+
   irAInicio() {
     this.router.navigate(["/dashboard"]);
     this.closeSidebar();
@@ -34,6 +35,7 @@ export class Sidebar {
   }
 
   cerrarSesion() {
+    // localStorage.removeItem('token'); 
     this.router.navigate(["/login"]);
     this.closeSidebar();
   }

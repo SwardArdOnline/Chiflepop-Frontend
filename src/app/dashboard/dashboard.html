@@ -1,7 +1,7 @@
 <div class="grid min-h-screen md:grid-cols-[260px_1fr]">
   <app-sidebar class="hidden md:block"></app-sidebar>
 
-  <main class="p-6 md:p-8 overflow-y-auto">
+  <main class="p-6 md:p-8"> 
     <router-outlet></router-outlet>
     <app-cart [open]="open" (openChange)="toggleSidebar()"></app-cart>
   </main>
