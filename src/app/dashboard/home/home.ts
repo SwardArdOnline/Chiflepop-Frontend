@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { DashboardService } from '../../services/dashboard-service';
 
 @Component({
   selector: 'app-home',
@@ -7,12 +8,39 @@ import { RouterLink } from '@angular/router';
   imports: [RouterLink],
   templateUrl: './home.html',
 })
-export class Home {
-  // Datos simulados para la vista
-  userName = 'Juan Diego'; // Podrías traerlo de un servicio de auth
+export class Home implements OnInit {
+  userName = 'Usuario';
+  loading = true;
+  
   stats = [
-    { title: 'Pedidos Realizados', value: '12', icon: '📦', color: 'bg-blue-100 text-blue-600' },
-    { title: 'Chifles Favoritos', value: 'Picante', icon: '🌶️', color: 'bg-red-100 text-red-600' },
-    { title: 'Puntos Acumulados', value: '350', icon: '⭐', color: 'bg-yellow-100 text-yellow-600' },
+    { title: 'Pedidos Realizados', value: '...', icon: '📦', color: 'bg-blue-100 text-blue-600' },
+    { title: 'Total Gastado', value: '...', icon: '💰', color: 'bg-green-100 text-green-600' },
+    { title: 'Último Antojo', value: '...', icon: '🍌', color: 'bg-yellow-100 text-yellow-600' },
   ];
+
+  constructor(private dashboardService: DashboardService) {}
+
+  ngOnInit() {
+    this.loadDashboardData();
+  }
+
+  loadDashboardData() {
+    const userId = localStorage.getItem('userId');
+    if (userId) {
+      this.dashboardService.getStats(Number(userId)).subscribe({
+        next: (data: any) => {
+          this.userName = data.nombreUsuario;
+          this.stats[0].value = data.pedidosRealizados.toString();
+          this.stats[1].value = `S/ ${data.totalGastado.toFixed(2)}`;
+          this.stats[2].value = data.ultimoProductoComprado;
+          
+          this.loading = false;
+        },
+        error: (err) => {
+          console.error('Error cargando dashboard:', err);
+          this.loading = false;
+        }
+      });
+    }
+  }
 }

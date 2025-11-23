@@ -1,80 +1,108 @@
-import { Component, HostListener } from '@angular/core';
-import { CarritoService } from '../../services/carrito-service';
+import { Component, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
+import { CarritoService } from '../../services/carrito-service';
+
 import { CartItem } from '../../interfaces/cartItem';
 import { CuentaBancaria } from '../../interfaces/cuentaBancaria';
+import { CuentaService } from '../../services/cuenta-service';
+import { DireccionService } from '../../services/direccion-service';
+import { PedidoService } from '../../services/pedido-service';
 
 @Component({
   selector: 'app-checkout',
-  imports: [],
+  standalone: true,
+  imports: [CommonModule],
   templateUrl: './checkout.html',
+  styleUrls: ['./checkout.css']
 })
-export class Checkout {
+export class Checkout implements OnInit {
   cartItems: CartItem[] = [];
   total: number = 0;
-  showPaymentModal: boolean = false;
-  cuentas: CuentaBancaria[] = [
-    { id: 1, banco: 'BCP', numero: '**** 2938', tipo: 'Débito' },
-    { id: 2, banco: 'Interbank', numero: '**** 1182', tipo: 'Crédito' },
-    { id: 3, banco: 'BBVA', numero: '**** 9921', tipo: 'Ahorros' },
-  ];
-  selectedCuenta: CuentaBancaria | null = null;
+  
+  // Modales
+  showPaymentModal = false;
+  showAddressModal = false;
 
-  constructor(private router: Router) {}
+  // Datos del Backend
+  cuentas: CuentaBancaria[] = [];
+  direcciones: any[] = [];
+
+  // Selecciones del Usuario
+  selectedCuenta: CuentaBancaria | null = null;
+  selectedDireccion: any | null = null;
+
+  isLoading = false;
+
+  constructor(
+    private cartService: CarritoService,
+    private cuentaService: CuentaService,
+    private direccionService: DireccionService,
+    private pedidoService: PedidoService,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
     this.loadCart();
-    this.calculateTotal();
+    this.loadUserData();
   }
 
   loadCart() {
-    const data = localStorage.getItem('cart');
-    if (data) {
-      const parsedData = JSON.parse(data);
-      // Normalización de datos para compatibilidad
-      this.cartItems = parsedData.map((item: any) => ({
-        product: item.product || item.producto,
-        quantity: item.quantity || item.cantidad
-      }));
-    } else {
-      this.cartItems = [];
-    }
+    this.cartItems = this.cartService.getCart();
+    this.total = this.cartService.getTotal();
   }
 
-  calculateTotal() {
-    this.total = this.cartItems.reduce(
-      (acc, item) => {
-        const precio = item.product?.precio || 0;
-        return acc + precio * item.quantity;
-      },
-      0
-    );
+  loadUserData() {
+    const userId = Number(localStorage.getItem('userId'));
+    if (!userId) return;
+    this.cuentaService.getMisCuentas(userId).subscribe(data => {
+      this.cuentas = data;
+      this.selectedCuenta = this.cuentas.find(c => c.esPrincipal) || null;
+    });
+
+    this.direccionService.getMisDirecciones(userId).subscribe(data => {
+      this.direcciones = data;
+      this.selectedDireccion = this.direcciones.find(d => d.esPrincipal) || this.direcciones[0] || null;
+    });
   }
 
-  openPaymentModal() {
-    this.showPaymentModal = true;
-  }
-
-  seleccionarCuenta(cuenta: CuentaBancaria) {
-    this.selectedCuenta = cuenta;
-    this.closePaymentModal();
-  }
-
-  closePaymentModal() {
-    this.showPaymentModal = false;
-  }
-
-  goBack() {
-    this.router.navigate(['/dashboard/products']);
-  }
-
-  pagar() {
-    if (!this.selectedCuenta) {
-      alert('⚠ Debes seleccionar una cuenta antes de pagar.');
+  async pagar() {
+    if (!this.selectedCuenta || !this.selectedDireccion) {
+      alert('⚠ Por favor selecciona una dirección y un método de pago.');
       return;
     }
-    alert(`💰 Pago procesado con éxito usando: ${this.selectedCuenta.banco}`);
-    localStorage.removeItem('cart');
-    this.router.navigate(['/dashboard']);
+
+    this.isLoading = true;
+    const userId = Number(localStorage.getItem('userId'));
+
+    const compraRequest = {
+      direccionEntregaId: this.selectedDireccion.direccionEntregaId,
+      cuentaClienteId: this.selectedCuenta.id,
+      productos: this.cartItems.map(item => ({
+        productoId: item.product.id,
+        cantidad: item.quantity
+      }))
+    };
+
+    this.pedidoService.crearPedido(userId, compraRequest).subscribe({
+      next: (res) => {
+        alert('¡Pedido realizado con éxito!');
+        this.cartService.clear();
+        this.router.navigate(['/dashboard/home']);
+      },
+      error: (err) => {
+        console.error(err);
+        alert('Error: ' + (err.error || 'No se pudo procesar el pago'));
+        this.isLoading = false;
+      }
+    });
   }
+
+  openPaymentModal() { this.showPaymentModal = true; }
+  closePaymentModal() { this.showPaymentModal = false; }
+  selectCuenta(c: CuentaBancaria) { this.selectedCuenta = c; this.closePaymentModal(); }
+
+  openAddressModal() { this.showAddressModal = true; }
+  closeAddressModal() { this.showAddressModal = false; }
+  selectDireccion(d: any) { this.selectedDireccion = d; this.closeAddressModal(); }
 }

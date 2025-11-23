@@ -49,16 +49,19 @@ export class RegisterComponent {
       alert('Debes aceptar los términos y condiciones');
       return;
     }
+    
     this.isLoading = true;
+    
     this.authService.register(this.name, this.email, this.password).subscribe({
       next: (response: any) => {
-        console.log('Registro exitoso:', response);
+        alert('Cuenta creada con éxito. ¡Ahora inicia sesión!');
         this.isLoading = false;
-        this.router.navigate(['/dashboard']);
+        this.router.navigate(['/login']);
       },
       error: (error) => {
         console.error('Error en el registro:', error);
         this.isLoading = false;
+        alert('Error al registrar. El correo podría estar en uso.');
       }
     });
   }

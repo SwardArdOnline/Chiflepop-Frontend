@@ -34,14 +34,19 @@ export class LoginComponent {
   onSubmit() {
     this.isLoading = true;
     this.authService.login(this.email, this.password).subscribe({
-      next: (response: any) => {
-        console.log('Login successful:', response);
+      next: (response) => {
+        console.log('Login exitoso:', response);
         this.isLoading = false;
-        this.router.navigate(['/dashboard']);
+        if (response.rol === 'ROLE_ADMIN') {
+          this.router.navigate(['/dashboard']); 
+        } else {
+          this.router.navigate(['/dashboard/home']);
+        }
       },
       error: (error) => {
-        console.error('Login failed:', error);
+        console.error('Error de login:', error);
         this.isLoading = false;
+        alert('Credenciales incorrectas o error en el servidor');
       }
     });
   }

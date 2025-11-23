@@ -1,63 +1,112 @@
-<div class="flex flex-col lg:flex-row justify-between gap-8 p-6 max-w-7xl mx-auto bg-[#f8fdf4]">
-  <section class="flex-grow lg:w-2/3 bg-white p-5 rounded-xl shadow-lg shadow-[#7CB342]/15">
-    <h2 class="text-2xl font-bold text-[#33691E] mb-4">🛍️ Tu Pedido</h2>
-    @if (cartItems.length > 0) { @for (item of cartItems; track $index) {
-    <div class="flex items-center gap-4 p-3 border-b border-[#dce7cc]">
-      <img
-        src="https://fakeimg.pl/80x80/?text={{item.product.nombre[0]}}"
-        alt="producto"
-        class="rounded-lg w-[70px] h-[70px] object-cover"
-      />
-
-      <div>
-        <strong class="text-base">{{ item.product.nombre }}</strong>
-        <p class="text-sm">Cantidad: {{ item.quantity }}</p>
-        <p class="text-sm">S/ {{ (item.product.precio * item.quantity).toFixed(2) }}</p>
+<div class="flex flex-col lg:flex-row justify-between gap-8 p-6 max-w-7xl mx-auto">
+  
+  <section class="flex-grow lg:w-2/3 bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+    <h2 class="text-2xl font-bold text-[#33691E] mb-6 border-b pb-4">🛍️ Resumen del Pedido</h2>
+    
+    @if (cartItems.length > 0) { 
+      @for (item of cartItems; track $index) {
+      <div class="flex items-center gap-4 p-4 border-b border-gray-100 last:border-0">
+        <div class="w-16 h-16 bg-gray-100 rounded-lg flex items-center justify-center text-2xl">
+          🍌
+        </div>
+        <div class="flex-1">
+          <strong class="text-lg text-gray-800">{{ item.product.nombre }}</strong>
+          <p class="text-sm text-gray-500">Cant: {{ item.quantity }}</p>
+        </div>
+        <p class="font-bold text-[#33691E]">S/ {{ (item.product.precio * item.quantity).toFixed(2) }}</p>
       </div>
-    </div>
-    } } @else {
-    <p class="text-center opacity-60 p-5">🛒 El carrito está vacío</p>
+      } 
+    } @else {
+      <p class="text-center py-10 text-gray-400">Tu carrito está vacío.</p>
     }
   </section>
   
-  <aside class="w-full lg:w-1/3 bg-white p-5 rounded-xl sticky top-5 shadow-lg shadow-[#FDD835]/25 h-fit">
-    <h3 class="text-xl font-bold text-[#33691E] mb-3">Resumen</h3>
-    <p class="text-lg my-3 border-b pb-3 border-gray-200">Total: <strong class="font-bold">S/ {{ total.toFixed(2) }}</strong></p>
-    @if (selectedCuenta) {
-    <div class="p-3 bg-green-50 rounded-lg border border-green-200 mb-4">
-      <p class="font-bold mb-1">Método seleccionado:</p>
-      <p class="text-sm">
-        {{ selectedCuenta.banco }} • {{ selectedCuenta.numero }} ({{
-        selectedCuenta.tipo }})
-      </p>
-    </div>
-    } @else {
-    <p class="text-red-600 mb-4 font-medium">⚠ No has seleccionado un método de pago</p>
-    }
-    <button class="w-full p-3 border-2 border-[#689F38] bg-transparent text-[#689F38] font-bold rounded-lg cursor-pointer transition-all duration-300 hover:bg-[#689F38] hover:text-white" (click)="openPaymentModal()">
-      Seleccionar método de pago
-    </button>
-    <button class="w-full p-4 mt-4 bg-gradient-to-br from-[#FDD835] to-[#F9A825] border-none text-lg rounded-xl cursor-pointer text-[#33691E] font-bold transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed hover:scale-[1.01] hover:bg-gradient-to-br hover:from-[#FFEB3B] hover:to-[#FDD835]" [disabled]="!selectedCuenta" (click)="pagar()">
-      Confirmar Pago 💳
-    </button>
-  </aside>
-</div>
-@if (showPaymentModal) {
-<div class="fixed top-0 left-0 w-full h-full bg-black/40 flex justify-center items-center backdrop-blur-sm z-[1000]">
-  <div class="bg-white w-[350px] rounded-2xl p-5 shadow-2xl shadow-[#7CB342]/35">
-    <div class="flex justify-between items-center mb-4">
-      <h3 class="text-xl font-bold">Seleccionar Cuenta Bancaria</h3>
-      <button class="border-none bg-none text-2xl cursor-pointer" (click)="closePaymentModal()">✖</button>
-    </div>
-    <div class="mt-4">
-      @for (cuenta of cuentas; track $index) {
-      <button class="w-full border-2 border-[#689F38] bg-[#f7ffef] p-3 rounded-xl mb-3 cursor-pointer transition-colors duration-300 hover:bg-[#689F38] hover:text-white hover:translate-y-[-2px]" (click)="seleccionarCuenta(cuenta)">
-        <strong class="block text-base">{{ cuenta.banco }}</strong>
-        <span class="block text-sm">{{ cuenta.numero }}</span>
-        <span class="block text-xs">({{ cuenta.tipo }})</span>
-      </button>
+  <aside class="w-full lg:w-1/3 flex flex-col gap-4">
+    
+    <div class="bg-white p-5 rounded-xl shadow-sm border border-gray-100">
+      <div class="flex justify-between items-center mb-3">
+        <h3 class="font-bold text-gray-700">📍 Dirección de Entrega</h3>
+        <button class="text-sm text-[#558B2F] font-semibold hover:underline" (click)="openAddressModal()">Cambiar</button>
+      </div>
+      
+      @if (selectedDireccion) {
+        <div class="p-3 bg-green-50 rounded-lg border border-green-100">
+          <p class="font-bold text-gray-800">{{ selectedDireccion.ciudad }}</p>
+          <p class="text-sm text-gray-600">{{ selectedDireccion.direccion }}</p>
+        </div>
+      } @else {
+        <p class="text-red-500 text-sm">⚠ Selecciona una dirección</p>
       }
     </div>
+
+    <div class="bg-white p-5 rounded-xl shadow-sm border border-gray-100">
+      <div class="flex justify-between items-center mb-3">
+        <h3 class="font-bold text-gray-700">💳 Método de Pago</h3>
+        <button class="text-sm text-[#558B2F] font-semibold hover:underline" (click)="openPaymentModal()">Cambiar</button>
+      </div>
+
+      @if (selectedCuenta) {
+        <div class="p-3 bg-blue-50 rounded-lg border border-blue-100">
+          <p class="font-bold text-gray-800">{{ selectedCuenta.banco }}</p>
+          <p class="text-sm text-gray-600">**** {{ selectedCuenta.numeroCuenta | slice:-4 }}</p>
+        </div>
+      } @else {
+        <p class="text-red-500 text-sm">⚠ Selecciona una tarjeta</p>
+      }
+    </div>
+
+    <div class="bg-white p-5 rounded-xl shadow-lg border border-green-100 sticky top-4">
+      <div class="flex justify-between items-center mb-6">
+        <span class="text-lg text-gray-600">Total a Pagar:</span>
+        <span class="text-3xl font-extrabold text-[#33691E]">S/ {{ total.toFixed(2) }}</span>
+      </div>
+
+      <button 
+        class="w-full py-4 bg-gradient-to-r from-[#7CB342] to-[#558B2F] text-white font-bold rounded-xl shadow-lg transition-transform active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-xl"
+        [disabled]="!selectedCuenta || !selectedDireccion || isLoading || cartItems.length === 0"
+        (click)="pagar()">
+        {{ isLoading ? 'Procesando...' : 'Confirmar Pedido 🚀' }}
+      </button>
+    </div>
+  </aside>
+</div>
+
+@if (showAddressModal) {
+<div class="fixed inset-0 bg-black/50 flex items-center justify-center z-50 backdrop-blur-sm" (click)="closeAddressModal()">
+  <div class="bg-white w-full max-w-md p-6 rounded-2xl shadow-2xl m-4" (click)="$event.stopPropagation()">
+    <h3 class="text-xl font-bold mb-4">Selecciona una dirección</h3>
+    <div class="flex flex-col gap-3 max-h-[60vh] overflow-y-auto">
+      @for (dir of direcciones; track $index) {
+        <button class="text-left p-4 rounded-xl border border-gray-200 hover:border-[#7CB342] hover:bg-green-50 transition-colors"
+                (click)="selectDireccion(dir)">
+          <p class="font-bold">{{ dir.ciudad }}</p>
+          <p class="text-sm text-gray-600">{{ dir.direccion }}</p>
+        </button>
+      }
+      @if (direcciones.length === 0) {
+        <p class="text-center text-gray-500">No tienes direcciones registradas.</p>
+      }
+    </div>
+    <button class="mt-4 w-full py-2 text-gray-500 hover:text-gray-800" (click)="closeAddressModal()">Cancelar</button>
+  </div>
+</div>
+}
+
+@if (showPaymentModal) {
+<div class="fixed inset-0 bg-black/50 flex items-center justify-center z-50 backdrop-blur-sm" (click)="closePaymentModal()">
+  <div class="bg-white w-full max-w-md p-6 rounded-2xl shadow-2xl m-4" (click)="$event.stopPropagation()">
+    <h3 class="text-xl font-bold mb-4">Selecciona un método de pago</h3>
+    <div class="flex flex-col gap-3">
+      @for (cta of cuentas; track $index) {
+        <button class="text-left p-4 rounded-xl border border-gray-200 hover:border-blue-500 hover:bg-blue-50 transition-colors"
+                (click)="selectCuenta(cta)">
+          <p class="font-bold">{{ cta.banco }}</p>
+          <p class="text-sm text-gray-600">**** {{ cta.numeroCuenta | slice:-4 }} ({{ cta.tipo }})</p>
+          <p class="text-xs text-[#33691E] font-bold">Saldo: S/ {{ cta.saldo }}</p>
+        </button>
+      }
+    </div>
+    <button class="mt-4 w-full py-2 text-gray-500 hover:text-gray-800" (click)="closePaymentModal()">Cancelar</button>
   </div>
 </div>
 }
