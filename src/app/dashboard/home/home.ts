@@ -19,11 +19,9 @@ export class Home implements OnInit {
   ];
 
   constructor(private dashboardService: DashboardService) {}
-
   ngOnInit() {
     this.loadDashboardData();
   }
-
   loadDashboardData() {
     const userId = localStorage.getItem('userId');
     if (userId) {

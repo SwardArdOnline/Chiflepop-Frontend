@@ -33,7 +33,6 @@ export class LoginComponent {
 
   onSubmit() {
     this.isLoading = true;
-    
     this.authService.login(this.email, this.password).subscribe({
       next: (response: any) => {
         console.log('Login exitoso:', response);
@@ -53,5 +52,4 @@ export class LoginComponent {
       }
     });
   }
-  
 }

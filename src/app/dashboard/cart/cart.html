@@ -27,7 +27,7 @@
         <strong class="text-base">{{ item.product.nombre }}</strong>
         <br />
         <span class="text-sm">Cant: {{ item.quantity }} — S./{{ (item.product.precio * item.quantity).toFixed(2) }}</span>
-        <button class="bg-[#FBC02D] text-[#33691E] border-none rounded-md px-2 py-1 cursor-pointer text-sm mt-1 ml-2 transition-all duration-200 hover:bg-[#FDD835] hover:scale-105" (click)="removeItem(item.product.id)">
+        <button class="bg-[#FBC02D] text-[#33691E] border-none rounded-md px-2 py-1 cursor-pointer text-sm mt-1 ml-2 transition-all duration-200 hover:bg-[#FDD835] hover:scale-105" (click)="removeItem(item.product.productoId)">
           ❌
         </button>
       </li>

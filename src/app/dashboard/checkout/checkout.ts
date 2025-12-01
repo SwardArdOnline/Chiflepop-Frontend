@@ -79,32 +79,23 @@ export class Checkout implements OnInit {
       alert("⚠ Por favor selecciona una dirección y un método de pago.");
       return;
     }
-
     this.isLoading = true;
     const userId = Number(localStorage.getItem("userId"));
-
-    // --- DEBUG: Para ver qué se envía realmente ---
     console.log("Cuenta ID:", this.selectedCuenta.id);
     console.log("Dirección ID:", this.selectedDireccion.direccionEntregaId);
     console.log("Producto Ejemplo:", this.cartItems[0]?.product);
-
     const compraRequest = {
-      // Dirección: Viene de la entidad, usa 'direccionEntregaId'
       direccionEntregaId: this.selectedDireccion.direccionEntregaId,
-      
-      // Cuenta: Viene del DTO, usa 'id'
       cuentaClienteId: this.selectedCuenta.id,
-      
       productos: this.cartItems.map((item) => {
-        const prod = item.product as any; 
         return {
-          productoId: prod.productoId || prod.id, // Busca 'productoId' primero
+          productoId: item.product.productoId,
           cantidad: item.quantity,
         };
       }),
     };
 
-    console.log("Enviando JSON:", compraRequest); // Verifícalo en la consola
+    console.log("Enviando JSON:", compraRequest);
 
     this.pedidoService.crearPedido(userId, compraRequest).subscribe({
       next: (res) => {

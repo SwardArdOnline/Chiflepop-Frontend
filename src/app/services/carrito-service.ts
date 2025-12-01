@@ -27,7 +27,7 @@ export class CarritoService {
   }
 
   addProduct(product: Producto) {
-    const exists = this.cart.find(item => item.product.id === product.id);
+    const exists = this.cart.find(item => item.product.productoId === product.productoId);
 
     if (exists) {
       exists.quantity++;
@@ -37,7 +37,7 @@ export class CarritoService {
     this.saveCart();
   }
   removeProduct(productId: number) {
-    this.cart = this.cart.filter(item => item.product.id !== productId);
+    this.cart = this.cart.filter(item => item.product.productoId !== productId);
     this.saveCart();
   }
 
