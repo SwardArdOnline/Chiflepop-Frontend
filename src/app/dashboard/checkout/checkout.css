@@ -11,7 +11,7 @@
 .btn-back {
   background: none;
   border: none;
-  color: #558B2F;
+  color: var(--color-text-secondary, #558B2F);
   font-size: 16px;
   font-weight: 600;
   cursor: pointer;
@@ -24,7 +24,7 @@
 
 .btn-back:hover {
   transform: translateX(-5px);
-  color: #33691E;
+  color: var(--color-text, #33691E);
 }
 
 /* Layout Principal */
@@ -41,15 +41,15 @@
   background: white;
   padding: 25px;
   border-radius: 16px;
-  box-shadow: 0 4px 20px rgba(124, 179, 66, 0.1);
+  box-shadow: 0 4px 20px color-mix(in srgb, var(--color-primary, #7CB342) 10%, transparent);
   min-width: 300px; /* Asegura un ancho mínimo para evitar que se aplasten demasiado */
 }
 
 .items-box h2 {
-  color: #33691E;
+  color: var(--color-text, #33691E);
   margin-bottom: 20px;
   font-size: 24px;
-  border-bottom: 2px solid #F1F8E9;
+  border-bottom: 2px solid var(--color-border-light, #F1F8E9);
   padding-bottom: 15px;
 }
 
@@ -58,7 +58,7 @@
   align-items: center;
   gap: 20px;
   padding: 15px 0;
-  border-bottom: 1px solid #F1F8E9;
+  border-bottom: 1px solid var(--color-border-light, #F1F8E9);
 }
 
 .item:last-child {
@@ -91,7 +91,7 @@
 }
 
 .item-details .price {
-  color: #33691E;
+  color: var(--color-text, #33691E);
   font-weight: 700;
   font-size: 16px;
   margin-top: 5px;
@@ -113,13 +113,13 @@
   position: sticky;
   top: 20px;
   box-shadow: 0 10px 30px rgba(0,0,0,0.05);
-  border: 1px solid #F1F8E9;
+  border: 1px solid var(--color-border-light, #F1F8E9);
   min-width: 280px; /* Ancho mínimo para el resumen */
 }
 
 .summary h3 {
   font-size: 20px;
-  color: #33691E;
+  color: var(--color-text, #33691E);
   margin-bottom: 20px;
 }
 
@@ -134,7 +134,7 @@
 .total-amount {
   font-size: 24px;
   font-weight: 800;
-  color: #33691E;
+  color: var(--color-text, #33691E);
 }
 
 .no-method {
@@ -148,7 +148,7 @@
 }
 
 .cuenta.selected {
-  background: #F1F8E9;
+  background: var(--color-border-light, #F1F8E9);
   border: 1px solid #C5E1A5;
   padding: 15px;
   border-radius: 12px;
@@ -168,17 +168,17 @@
 
 .banco {
   font-weight: 700;
-  color: #33691E;
+  color: var(--color-text, #33691E);
 }
 
 .numero {
   font-size: 14px;
-  color: #558B2F;
+  color: var(--color-text-secondary, #558B2F);
 }
 
 .tipo {
   font-size: 12px;
-  background: #AED581;
+  background: var(--color-border, #AED581);
   color: white;
   padding: 2px 8px;
   border-radius: 10px;
@@ -187,9 +187,9 @@
 .btn-select {
   width: 100%;
   padding: 14px;
-  border: 2px dashed #AED581;
+  border: 2px dashed var(--color-border, #AED581);
   background: transparent;
-  color: #558B2F;
+  color: var(--color-text-secondary, #558B2F);
   font-weight: 600;
   border-radius: 12px;
   cursor: pointer;
@@ -197,16 +197,16 @@
 }
 
 .btn-select:hover {
-  background: #F1F8E9;
-  border-color: #7CB342;
-  color: #33691E;
+  background: var(--color-border-light, #F1F8E9);
+  border-color: var(--color-primary, #7CB342);
+  color: var(--color-text, #33691E);
 }
 
 .btn-pay {
   width: 100%;
   padding: 16px;
   margin-top: 15px;
-  background: linear-gradient(135deg, #8BC34A 0%, #689F38 100%);
+  background: linear-gradient(135deg, var(--color-primary-light, #8BC34A) 0%, var(--color-primary-hover, #689F38) 100%);
   border: none;
   font-size: 18px;
   border-radius: 12px;
@@ -214,7 +214,7 @@
   color: white;
   font-weight: bold;
   transition: .3s;
-  box-shadow: 0 4px 15px rgba(104, 159, 56, 0.3);
+  box-shadow: 0 4px 15px color-mix(in srgb, var(--color-primary-hover, #689F38) 30%, transparent);
 }
 
 .btn-pay:disabled {
@@ -226,7 +226,7 @@
 
 .btn-pay:hover:not(:disabled) {
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(104, 159, 56, 0.4);
+  box-shadow: 0 6px 20px color-mix(in srgb, var(--color-primary-hover, #689F38) 40%, transparent);
 }
 
 /* 💳 MODAL STYLES */
@@ -301,7 +301,7 @@
 }
 
 .cuenta-item:hover {
-  border-color: #7CB342;
+  border-color: var(--color-primary, #7CB342);
   background: #F9FBF8;
   transform: scale(1.02);
 }

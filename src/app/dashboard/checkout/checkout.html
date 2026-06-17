@@ -4,7 +4,7 @@
   <section
     class="flex-grow lg:w-2/3 bg-white p-6 rounded-xl shadow-sm border border-gray-100"
   >
-    <h2 class="text-2xl font-bold text-[#33691E] mb-6 border-b pb-4">
+    <h2 class="text-2xl font-bold text-[var(--color-text,#33691E)] mb-6 border-b pb-4">
       🛍️ Resumen del Pedido
     </h2>
 
@@ -21,7 +21,7 @@
         <strong class="text-lg text-gray-800">{{ item.product.nombre }}</strong>
         <p class="text-sm text-gray-500">Cant: {{ item.quantity }}</p>
       </div>
-      <p class="font-bold text-[#33691E]">
+      <p class="font-bold text-[var(--color-text,#33691E)]">
         S/ {{ (item.product.precio * item.quantity).toFixed(2) }}
       </p>
     </div>
@@ -35,7 +35,8 @@
       <div class="flex justify-between items-center mb-3">
         <h3 class="font-bold text-gray-700">📍 Dirección de Entrega</h3>
         <button
-          class="text-sm text-[#558B2F] font-semibold hover:underline"
+          type="button"
+          class="text-sm text-[var(--color-text-secondary,#558B2F)] font-semibold hover:underline"
           (click)="openAddressModal()"
         >
           Cambiar
@@ -56,7 +57,8 @@
       <div class="flex justify-between items-center mb-3">
         <h3 class="font-bold text-gray-700">💳 Método de Pago</h3>
         <button
-          class="text-sm text-[#558B2F] font-semibold hover:underline"
+          type="button"
+          class="text-sm text-[var(--color-text-secondary,#558B2F)] font-semibold hover:underline"
           (click)="openPaymentModal()"
         >
           Cambiar
@@ -80,17 +82,18 @@
     >
       <div class="flex justify-between items-center mb-6">
         <span class="text-lg text-gray-600">Total a Pagar:</span>
-        <span class="text-3xl font-extrabold text-[#33691E]"
+        <span class="text-3xl font-extrabold text-[var(--color-text,#33691E)]"
           >S/ {{ total.toFixed(2) }}</span
         >
       </div>
 
       <button
-        class="w-full py-4 bg-gradient-to-r from-[#7CB342] to-[#558B2F] text-white font-bold rounded-xl shadow-lg transition-transform active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-xl"
+        type="button"
+        class="w-full py-4 bg-gradient-to-r from-[var(--color-primary,#7CB342)] to-[var(--color-text-secondary,#558B2F)] text-white font-bold rounded-xl shadow-lg transition-transform active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-xl"
         [disabled]="!selectedCuenta || !selectedDireccion || isLoading || cartItems.length === 0"
         (click)="pagar()"
       >
-        {{ isLoading ? 'Procesando...' : 'Confirmar Pedido 🚀' }}
+        {{ isLoading ? 'Procesando...' : 'Confirmar Pedido' }} <span aria-hidden="true">🚀</span>
       </button>
     </div>
   </aside>
@@ -103,13 +106,17 @@
 >
   <div
     class="bg-white w-full max-w-md p-6 rounded-2xl shadow-2xl m-4"
+    role="dialog"
+    aria-modal="true"
+    aria-label="Seleccionar dirección"
     (click)="$event.stopPropagation()"
   >
     <h3 class="text-xl font-bold mb-4">Selecciona una dirección</h3>
     <div class="flex flex-col gap-3 max-h-[60vh] overflow-y-auto">
       @for (dir of direcciones; track $index) {
       <button
-        class="text-left p-4 rounded-xl border border-gray-200 hover:border-[#7CB342] hover:bg-green-50 transition-colors"
+        type="button"
+        class="text-left p-4 rounded-xl border border-gray-200 hover:border-[var(--color-primary,#7CB342)] hover:bg-green-50 transition-colors"
         (click)="selectDireccion(dir)"
       >
         <p class="font-bold">{{ dir.ciudad }}</p>
@@ -121,13 +128,15 @@
       </p>
       }
       <button
-        class="w-full py-3 mt-2 border-2 border-dashed border-[#7CB342] text-[#558B2F] font-bold rounded-xl hover:bg-green-50 flex items-center justify-center gap-2"
+        type="button"
+        class="w-full py-3 mt-2 border-2 border-dashed border-[var(--color-primary,#7CB342)] text-[var(--color-text-secondary,#558B2F)] font-bold rounded-xl hover:bg-green-50 flex items-center justify-center gap-2"
         (click)="openCreateAddressModal()"
       >
-        <span>+</span> Agregar Nueva Dirección
+        <span aria-hidden="true">+</span> Agregar Nueva Dirección
       </button>
     </div>
     <button
+      type="button"
       class="mt-4 w-full py-2 text-gray-500 hover:text-gray-800"
       (click)="closeAddressModal()"
     >
@@ -142,12 +151,16 @@
 >
   <div
     class="bg-white w-full max-w-md p-6 rounded-2xl shadow-2xl m-4"
+    role="dialog"
+    aria-modal="true"
+    aria-label="Seleccionar método de pago"
     (click)="$event.stopPropagation()"
   >
     <h3 class="text-xl font-bold mb-4">Selecciona un método de pago</h3>
     <div class="flex flex-col gap-3">
       @for (cta of cuentas; track $index) {
       <button
+        type="button"
         class="text-left p-4 rounded-xl border border-gray-200 hover:border-blue-500 hover:bg-blue-50 transition-colors"
         (click)="selectCuenta(cta)"
       >
@@ -155,13 +168,14 @@
         <p class="text-sm text-gray-600">
           **** {{ cta.numeroCuenta | slice:-4 }} ({{ cta.tipo }})
         </p>
-        <p class="text-xs text-[#33691E] font-bold">
+        <p class="text-xs text-[var(--color-text,#33691E)] font-bold">
           Saldo: S/ {{ cta.saldo }}
         </p>
       </button>
       }
     </div>
     <button
+      type="button"
       class="mt-4 w-full py-2 text-gray-500 hover:text-gray-800"
       (click)="closePaymentModal()"
     >
@@ -174,38 +188,94 @@
 <div class="fixed inset-0 bg-black/60 flex items-center justify-center z-[2100] backdrop-blur-sm p-4" (click)="closeCreateAddressModal()">
   <div class="bg-white w-full max-w-md rounded-2xl shadow-2xl overflow-hidden" (click)="$event.stopPropagation()">
     
-    <div class="bg-[#33691E] p-5 text-white">
+    <div class="bg-[var(--color-primary-dark,#33691E)] p-5 text-white">
       <h3 class="text-xl font-bold">Nueva Dirección</h3>
       <p class="text-sm opacity-80">¿Dónde enviamos tus chifles?</p>
     </div>
 
-    <div class="p-6 space-y-4">
+    <form #addressForm="ngForm" class="p-6 space-y-4">
       <div>
-        <label class="block text-sm font-bold text-gray-700 mb-1">Dirección Exacta</label>
-        <input type="text" [(ngModel)]="nuevaDireccion.direccion" placeholder="Av. Larco 123, Dpto 401" class="w-full p-3 border border-gray-300 rounded-xl focus:border-[#7CB342] outline-none">
+        <label for="direccion" class="block text-sm font-bold text-gray-700 mb-1">Dirección Exacta</label>
+        <input
+          type="text"
+          id="direccion"
+          #direccion="ngModel"
+          [(ngModel)]="nuevaDireccion.direccion"
+          name="direccion"
+          placeholder="Av. Larco 123, Dpto 401"
+          required
+          minlength="5"
+          class="w-full p-3 border border-gray-300 rounded-xl focus:border-[var(--color-primary,#7CB342)] outline-none"
+          [class.border-red-500]="direccion.invalid && direccion.touched"
+        />
+        @if (direccion.invalid && direccion.touched) {
+          <div class="text-red-500 text-sm mt-1 font-medium" role="alert" aria-live="polite">
+            @if (direccion.errors?.['required']) { La dirección exacta es obligatoria para el envío }
+            @else if (direccion.errors?.['minlength']) { La dirección debe tener al menos 5 caracteres }
+          </div>
+        }
       </div>
 
       <div class="grid grid-cols-2 gap-4">
         <div>
-          <label class="block text-sm font-bold text-gray-700 mb-1">Ciudad</label>
-          <input type="text" [(ngModel)]="nuevaDireccion.ciudad" class="w-full p-3 border border-gray-300 rounded-xl focus:border-[#7CB342] outline-none">
+          <label for="ciudad" class="block text-sm font-bold text-gray-700 mb-1">Ciudad</label>
+          <input
+            type="text"
+            id="ciudad"
+            #ciudad="ngModel"
+            [(ngModel)]="nuevaDireccion.ciudad"
+            name="ciudad"
+            required
+            minlength="3"
+            class="w-full p-3 border border-gray-300 rounded-xl focus:border-[var(--color-primary,#7CB342)] outline-none"
+            [class.border-red-500]="ciudad.invalid && ciudad.touched"
+          />
+          @if (ciudad.invalid && ciudad.touched) {
+            <div class="text-red-500 text-sm mt-1 font-medium" role="alert" aria-live="polite">
+              @if (ciudad.errors?.['required']) { La ciudad es obligatoria para el envío }
+              @else if (ciudad.errors?.['minlength']) { La ciudad debe tener al menos 3 caracteres }
+            </div>
+          }
         </div>
         <div>
-          <label class="block text-sm font-bold text-gray-700 mb-1">Departamento</label>
-          <input type="text" [(ngModel)]="nuevaDireccion.departamento" class="w-full p-3 border border-gray-300 rounded-xl focus:border-[#7CB342] outline-none">
+          <label for="departamento" class="block text-sm font-bold text-gray-700 mb-1">Departamento</label>
+          <input
+            type="text"
+            id="departamento"
+            #departamento="ngModel"
+            [(ngModel)]="nuevaDireccion.departamento"
+            name="departamento"
+            required
+            minlength="3"
+            class="w-full p-3 border border-gray-300 rounded-xl focus:border-[var(--color-primary,#7CB342)] outline-none"
+            [class.border-red-500]="departamento.invalid && departamento.touched"
+          />
+          @if (departamento.invalid && departamento.touched) {
+            <div class="text-red-500 text-sm mt-1 font-medium" role="alert" aria-live="polite">
+              @if (departamento.errors?.['required']) { El departamento es obligatorio para el envío }
+              @else if (departamento.errors?.['minlength']) { El departamento debe tener al menos 3 caracteres }
+            </div>
+          }
         </div>
       </div>
 
       <div>
         <label class="block text-sm font-bold text-gray-700 mb-1">Referencia (Opcional)</label>
-        <input type="text" [(ngModel)]="nuevaDireccion.referencia" placeholder="Frente al parque..." class="w-full p-3 border border-gray-300 rounded-xl focus:border-[#7CB342] outline-none">
+        <input
+          type="text"
+          #referencia="ngModel"
+          [(ngModel)]="nuevaDireccion.referencia"
+          name="referencia"
+          placeholder="Frente al parque..."
+          class="w-full p-3 border border-gray-300 rounded-xl focus:border-[var(--color-primary,#7CB342)] outline-none"
+        />
       </div>
 
       <div class="flex gap-3 mt-6">
-        <button (click)="closeCreateAddressModal()" class="flex-1 py-3 rounded-xl border border-gray-300 text-gray-600 font-bold hover:bg-gray-50">Cancelar</button>
-        <button (click)="guardarDireccion()" class="flex-1 py-3 rounded-xl bg-[#7CB342] text-white font-bold hover:bg-[#689F38]">Guardar</button>
+        <button type="button" (click)="closeCreateAddressModal()" class="flex-1 py-3 rounded-xl border border-gray-300 text-gray-600 font-bold hover:bg-gray-50">Cancelar</button>
+        <button type="button" (click)="guardarDireccion()" [disabled]="addressForm.invalid" class="flex-1 py-3 rounded-xl bg-[var(--color-primary,#7CB342)] text-white font-bold hover:bg-[var(--color-primary-hover,#689F38)] disabled:opacity-50 disabled:cursor-not-allowed">Guardar</button>
       </div>
-    </div>
+    </form>
   </div>
 </div>
 }

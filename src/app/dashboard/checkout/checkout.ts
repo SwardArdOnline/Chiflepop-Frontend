@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, HostListener } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { Router } from "@angular/router";
 import { CarritoService } from "../../services/carrito-service";
@@ -114,11 +114,6 @@ export class Checkout implements OnInit {
   guardarDireccion() {
     const userId = Number(localStorage.getItem("userId"));
 
-    if (!this.nuevaDireccion.direccion) {
-      alert("Por favor ingresa la dirección exacta");
-      return;
-    }
-
     this.direccionService
       .crearDireccion(userId, this.nuevaDireccion)
       .subscribe({
@@ -154,6 +149,17 @@ export class Checkout implements OnInit {
   selectCuenta(c: CuentaBancaria) {
     this.selectedCuenta = c;
     this.closePaymentModal();
+  }
+
+  @HostListener('document:keydown.escape')
+  onEscape() {
+    if (this.showCreateAddressModal) {
+      this.closeCreateAddressModal();
+    } else if (this.showAddressModal) {
+      this.closeAddressModal();
+    } else if (this.showPaymentModal) {
+      this.closePaymentModal();
+    }
   }
 
   openAddressModal() {

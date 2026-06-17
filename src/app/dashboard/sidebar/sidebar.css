@@ -45,7 +45,7 @@
 .sidebar-title {
   font-size: 22px;
   font-weight: 800;
-  background: linear-gradient(135deg, #689F38 0%, #FDD835 100%);
+  background: linear-gradient(135deg, var(--color-primary-hover, #689F38) 0%, var(--color-accent, #FDD835) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
@@ -66,7 +66,7 @@
 
 .menu-section {
   font-weight: 700;
-  color: #33691E;
+  color: var(--color-text, #33691E);
   font-size: 15px;
   margin: 22px 0 10px;
 }
@@ -77,13 +77,13 @@
   border-radius: 12px;
   cursor: pointer;
   transition: all 0.3s ease;
-  color: #558B2F;
+  color: var(--color-text-secondary, #558B2F);
 }
 
 .menu-item:hover {
-  background: rgba(104,159,56,0.1);
+  background: color-mix(in srgb, var(--color-primary-hover, #689F38) 10%, transparent);
   transform: translateX(6px);
-  color: #33691E;
+  color: var(--color-text, #33691E);
   font-weight: 600;
 }
 
@@ -93,7 +93,7 @@
   left: 24px;
   padding: 12px 20px;
   border-radius: 14px;
-  background: linear-gradient(135deg, #7CB342 0%, #689F38 100%);
+  background: linear-gradient(135deg, var(--color-primary, #7CB342) 0%, var(--color-primary-hover, #689F38) 100%);
   color: white;
   font-size: 16px;
   font-weight: 600;
@@ -102,7 +102,7 @@
   display: flex;
   align-items: center;
   gap: 10px;
-  box-shadow: 0 4px 15px rgba(124, 179, 66, 0.3);
+  box-shadow: 0 4px 15px color-mix(in srgb, var(--color-primary, #7CB342) 30%, transparent);
   transition: all 0.3s ease;
   /* Z-index alto para estar sobre el checkout */
   z-index: 900;
@@ -110,7 +110,7 @@
 
 .sidebar-trigger:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 25px rgba(124, 179, 66, 0.4);
+  box-shadow: 0 6px 25px color-mix(in srgb, var(--color-primary, #7CB342) 40%, transparent);
 }
 
 .sidebar-trigger .icon {

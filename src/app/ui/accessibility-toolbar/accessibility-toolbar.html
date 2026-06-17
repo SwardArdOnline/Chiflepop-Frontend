@@ -1,0 +1,78 @@
+<div class="a11y-toolbar" role="region" aria-label="Barra de accesibilidad">
+  <button
+    type="button"
+    class="a11y-fab"
+    (click)="togglePanel()"
+    [attr.aria-expanded]="panelOpen"
+    aria-label="Abrir opciones de accesibilidad"
+    title="Accesibilidad"
+  >
+    <span aria-hidden="true">♿</span>
+  </button>
+
+  @if (panelOpen) {
+    <div class="a11y-panel" role="group" aria-label="Opciones de accesibilidad">
+      <div class="a11y-panel-header">
+        <span>Accesibilidad</span>
+        <button type="button" class="a11y-close" (click)="closePanel()" aria-label="Cerrar panel de accesibilidad">&times;</button>
+      </div>
+
+      <button
+        type="button"
+        class="a11y-btn"
+        [class.active]="a11y.highContrast()"
+        (click)="a11y.toggleHighContrast(); $event.stopPropagation()"
+        aria-label="Activar alto contraste"
+      >
+        <span class="a11y-btn-icon" aria-hidden="true">🎨</span>
+        <span class="a11y-btn-label">Alto Contraste</span>
+        <span class="a11y-btn-status">{{ a11y.highContrast() ? 'Activado' : 'Desactivado' }}</span>
+      </button>
+
+      <button
+        type="button"
+        class="a11y-btn"
+        (click)="a11y.cycleFontSize(); $event.stopPropagation()"
+        aria-label="Cambiar tamaño de texto"
+      >
+        <span class="a11y-btn-icon" aria-hidden="true"><span class="text-lg font-bold">A</span></span>
+        <span class="a11y-btn-label">Tamaño Texto</span>
+        <span class="a11y-btn-status">{{ fontSizeLabel() }}</span>
+      </button>
+
+      <button
+        type="button"
+        class="a11y-btn"
+        [class.active]="a11y.showAltText()"
+        (click)="a11y.toggleShowAltText(); $event.stopPropagation()"
+        aria-label="Mostrar descripciones de imágenes"
+      >
+        <span class="a11y-btn-icon" aria-hidden="true">👁</span>
+        <span class="a11y-btn-label">Mostrar Alt Text</span>
+        <span class="a11y-btn-status">{{ a11y.showAltText() ? 'Visible' : 'Oculto' }}</span>
+      </button>
+
+      <button
+        type="button"
+        class="a11y-btn"
+        [class.active]="a11y.screenReaderMode()"
+        (click)="a11y.toggleScreenReaderMode(); $event.stopPropagation()"
+        aria-label="Activar modo lector"
+      >
+        <span class="a11y-btn-icon" aria-hidden="true">♿</span>
+        <span class="a11y-btn-label">Modo Lector</span>
+        <span class="a11y-btn-status">{{ a11y.screenReaderMode() ? 'Activado' : 'Desactivado' }}</span>
+      </button>
+
+      <button
+        type="button"
+        class="a11y-btn a11y-btn-reset"
+        (click)="a11y.resetAll(); $event.stopPropagation()"
+        aria-label="Restablecer ajustes de accesibilidad"
+      >
+        <span class="a11y-btn-icon" aria-hidden="true">↺</span>
+        <span class="a11y-btn-label">Restablecer</span>
+      </button>
+    </div>
+  }
+</div>

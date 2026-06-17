@@ -1,14 +1,15 @@
 <div class="max-w-5xl mx-auto">
   <div class="flex justify-between items-center mb-8">
     <div>
-      <h2 class="text-3xl font-bold text-[#33691E]">Mis Cuentas</h2>
+      <h2 class="text-3xl font-bold text-[var(--color-text,#33691E)]">Mis Cuentas</h2>
       <p class="text-gray-600">Gestiona tu dinero</p>
     </div>
     <button
+      type="button"
       (click)="openModal()"
-      class="bg-[#7CB342] text-white px-4 py-2 rounded-xl shadow-lg hover:bg-[#689F38] transition flex items-center gap-2"
+      class="bg-[var(--color-primary,#7CB342)] text-white px-4 py-2 rounded-xl shadow-lg hover:bg-[var(--color-primary-hover,#689F38)] transition flex items-center gap-2"
     >
-      <span>+</span> Agregar Cuenta
+      <span aria-hidden="true">+</span> Agregar Cuenta
     </button>
   </div>
 
@@ -20,8 +21,9 @@
   >
     <p class="text-gray-500">No tienes cuentas registradas.</p>
     <button
+      type="button"
       (click)="openModal()"
-      class="mt-4 text-[#558B2F] font-bold hover:underline"
+      class="mt-4 text-[var(--color-text-secondary,#558B2F)] font-bold hover:underline"
     >
       ¡Registra tu primera tarjeta!
     </button>
@@ -30,7 +32,7 @@
   <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
     @for (cuenta of cuentas; track $index) {
     <div
-      class="bg-gradient-to-br from-[#2E7D32] to-[#1B5E20] p-6 rounded-2xl text-white shadow-xl relative overflow-hidden"
+      class="bg-gradient-to-br from-[var(--color-primary-dark,#2E7D32)] to-[var(--color-primary-darker,#1B5E20)] p-6 rounded-2xl text-white shadow-xl relative overflow-hidden"
     >
       <div
         class="absolute top-0 right-0 w-20 h-20 bg-white opacity-10 rounded-bl-full"
@@ -65,19 +67,27 @@
 >
   <div
     class="bg-white w-full max-w-md rounded-2xl shadow-2xl overflow-hidden"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="accounts-modal-title"
     (click)="$event.stopPropagation()"
   >
-    <div class="bg-[#33691E] p-6 text-white text-center">
-      <h3 class="text-xl font-bold">Nueva Cuenta Bancaria</h3>
+    <div class="bg-[var(--color-primary-dark,#33691E)] p-6 text-white text-center">
+      <h3 id="accounts-modal-title" class="text-xl font-bold">Nueva Cuenta Bancaria</h3>
       <p class="text-sm opacity-80">Ingresa los detalles de tu tarjeta</p>
     </div>
 
-    <div class="p-6 space-y-4">
+    <form #accountForm="ngForm" class="p-6 space-y-4">
       <div>
-        <label class="block text-sm font-bold text-gray-700 mb-1">Banco</label>
+        <label for="bancoId" class="block text-sm font-bold text-gray-700 mb-1">Banco</label>
         <select
+          id="bancoId"
+          #bancoId="ngModel"
           [(ngModel)]="nuevaCuenta.bancoId"
-          class="w-full p-3 border border-gray-300 rounded-xl focus:border-[#7CB342] focus:ring-2 focus:ring-[#7CB342]/20 outline-none transition"
+          name="bancoId"
+          required
+          class="w-full p-3 border border-gray-300 rounded-xl focus:border-[var(--color-primary,#7CB342)] focus:ring-2 focus:ring-[var(--color-primary,#7CB342)]/20 outline-none transition"
+          [class.border-red-500]="bancoId.invalid && bancoId.touched"
         >
           @for (banco of bancos; track banco.id) {
           <option [value]="banco.id">{{ banco.nombre }}</option>
@@ -86,25 +96,42 @@
       </div>
 
       <div>
-        <label class="block text-sm font-bold text-gray-700 mb-1"
+        <label for="numeroCuenta" class="block text-sm font-bold text-gray-700 mb-1"
           >Número de Tarjeta</label
         >
         <input
           type="text"
+          id="numeroCuenta"
+          #numeroCuenta="ngModel"
           [(ngModel)]="nuevaCuenta.numeroCuenta"
+          name="numeroCuenta"
           (input)="formatCardNumber($event)"
           placeholder="0000 0000 0000 0000"
           maxlength="19"
-          class="w-full p-3 border border-gray-300 rounded-xl focus:border-[#7CB342] focus:ring-2 focus:ring-[#7CB342]/20 outline-none transition font-mono text-lg"
+          required
+          pattern="[\d ]{16,19}"
+          class="w-full p-3 border border-gray-300 rounded-xl focus:border-[var(--color-primary,#7CB342)] focus:ring-2 focus:ring-[var(--color-primary,#7CB342)]/20 outline-none transition font-mono text-lg"
+          [class.border-red-500]="numeroCuenta.invalid && numeroCuenta.touched"
         />
+        @if (numeroCuenta.invalid && numeroCuenta.touched) {
+          <div class="text-red-500 text-sm mt-1 font-medium">
+            @if (numeroCuenta.errors?.['required']) { El número de tarjeta es obligatorio }
+            @else if (numeroCuenta.errors?.['pattern']) { Debe tener 16 dígitos numéricos }
+          </div>
+        }
       </div>
 
       <div class="grid grid-cols-2 gap-4">
         <div>
-          <label class="block text-sm font-bold text-gray-700 mb-1">Tipo</label>
+          <label for="metodoPagoId" class="block text-sm font-bold text-gray-700 mb-1">Tipo</label>
           <select
+            id="metodoPagoId"
+            #metodoPagoId="ngModel"
             [(ngModel)]="nuevaCuenta.metodoPagoId"
-            class="w-full p-3 border border-gray-300 rounded-xl outline-none transition focus:border-[#7CB342]"
+            name="metodoPagoId"
+            required
+            class="w-full p-3 border border-gray-300 rounded-xl outline-none transition focus:border-[var(--color-primary,#7CB342)]"
+            [class.border-red-500]="metodoPagoId.invalid && metodoPagoId.touched"
           >
             <option [value]="1">Crédito</option>
             <option [value]="2">Débito</option>
@@ -128,19 +155,22 @@
 
       <div class="flex gap-3 mt-6">
         <button
+          type="button"
           (click)="closeModal()"
           class="flex-1 py-3 rounded-xl border border-gray-300 text-gray-600 font-semibold hover:bg-gray-50 transition"
         >
           Cancelar
         </button>
         <button
+          type="button"
           (click)="guardarCuenta()"
-          class="flex-1 py-3 rounded-xl bg-gradient-to-r from-[#7CB342] to-[#558B2F] text-white font-bold shadow-lg hover:shadow-xl transition transform active:scale-95"
+          [disabled]="accountForm.invalid"
+          class="flex-1 py-3 rounded-xl bg-gradient-to-r from-[var(--color-primary,#7CB342)] to-[var(--color-text-secondary,#558B2F)] text-white font-bold shadow-lg hover:shadow-xl transition transform active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
         >
           Guardar
         </button>
       </div>
-    </div>
+    </form>
   </div>
 </div>
 }

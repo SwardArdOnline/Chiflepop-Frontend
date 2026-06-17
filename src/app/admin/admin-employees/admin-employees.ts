@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AdminService } from '../../services/admin-service';
@@ -53,6 +53,13 @@ export class AdminEmployees implements OnInit {
         this.closeModal();
         this.loadEmpleados();
       });
+    }
+  }
+
+  @HostListener('document:keydown.escape')
+  onEscape() {
+    if (this.showModal) {
+      this.closeModal();
     }
   }
 

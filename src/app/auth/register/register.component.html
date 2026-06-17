@@ -1,42 +1,94 @@
 <div class="auth-container">
   <div class="auth-card">
     <div class="auth-header">
-      <div class="logo" (click)="goToHome()">
-        <span class="logo-icon">🍌</span>
+      <a class="logo" routerLink="/">
+        <span class="logo-icon" aria-hidden="true">🍌</span>
         <span class="logo-text">ChiflePop</span>
-      </div>
+      </a>
       <h1 class="auth-title">Crea tu cuenta</h1>
       <p class="auth-subtitle">Únete a la comunidad de ChiflePop</p>
     </div>
 
-    <form class="auth-form" (ngSubmit)="onSubmit()">
+    <form class="auth-form" #registerForm="ngForm" (ngSubmit)="onSubmit()">
       <div class="form-group">
         <label for="name" class="form-label">Nombre Completo</label>
         <input
           type="text"
           id="name"
           name="name"
+          #nameField="ngModel"
           [(ngModel)]="name"
           class="form-input"
           placeholder="Tu nombre"
           required
+          minlength="3"
+          maxlength="100"
+          pattern="[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+"
         />
+        @if (nameField.invalid && nameField.touched) {
+          <div class="error-msg" role="alert" aria-live="polite">
+            @if (nameField.errors?.['required']) {
+              El nombre completo es obligatorio
+            }
+            @if (nameField.errors?.['minlength']) {
+              El nombre debe tener al menos 3 caracteres
+            }
+            @if (nameField.errors?.['pattern']) {
+              El nombre solo puede contener letras y espacios
+            }
+          </div>
+        }
       </div>
-      <div>
-        <label class="block text-sm font-bold text-gray-700 mb-1">Teléfono</label>
-        <input type="tel" [(ngModel)]="phone" name="phone" class="w-full p-3 border border-gray-300 rounded-xl focus:border-[#7CB342] outline-none bg-gray-50" placeholder="999 999 999" required>
+
+      <div class="form-group">
+        <label for="phone" class="form-label">Teléfono</label>
+        <input
+          type="tel"
+          id="phone"
+          name="phone"
+          #phoneField="ngModel"
+          [(ngModel)]="phone"
+          class="form-input"
+          placeholder="999 999 999"
+          required
+          maxlength="9"
+          pattern="[0-9]{9}"
+        />
+        @if (phoneField.invalid && phoneField.touched) {
+          <div class="error-msg" role="alert" aria-live="polite">
+            @if (phoneField.errors?.['required']) {
+              El número de teléfono es obligatorio
+            }
+            @if (phoneField.errors?.['pattern']) {
+              El teléfono debe tener exactamente 9 dígitos numéricos
+            }
+          </div>
+        }
       </div>
+
       <div class="form-group">
         <label for="email" class="form-label">Correo Electrónico</label>
         <input
           type="email"
           id="email"
           name="email"
+          #emailField="ngModel"
           [(ngModel)]="email"
           class="form-input"
           placeholder="tu@email.com"
           required
+          pattern="[a-zA-Z0-9._%+\-]+@(gmail\.com|hotmail\.com|outlook\.com|yahoo\.com|icloud\.com)"
         />
+        @if (emailField.invalid && emailField.touched) {
+          <div class="error-msg" role="alert" aria-live="polite">
+            @if (emailField.errors?.['required']) {
+              El correo electrónico es obligatorio
+            }
+            @if (emailField.errors?.['pattern']) {
+              El correo debe ser de Gmail, Hotmail, Outlook, Yahoo o iCloud
+            }
+          </div>
+        }
       </div>
 
       <div class="form-group">
@@ -46,19 +98,32 @@
             [type]="showPassword ? 'text' : 'password'"
             id="password"
             name="password"
+            #passwordField="ngModel"
             [(ngModel)]="password"
             class="form-input"
             placeholder="••••••••"
             required
+            minlength="6"
           />
           <button
             type="button"
             class="password-toggle"
             (click)="togglePassword()"
+            [attr.aria-label]="showPassword ? 'Ocultar contraseña' : 'Mostrar contraseña'"
           >
-            {{ showPassword ? '👁️' : '👁️‍🗨️' }}
+            <span aria-hidden="true">{{ showPassword ? '👁️' : '👁️‍🗨️' }}</span>
           </button>
         </div>
+        @if (passwordField.invalid && passwordField.touched) {
+          <div class="error-msg" role="alert" aria-live="polite">
+            @if (passwordField.errors?.['required']) {
+              La contraseña es obligatoria
+            }
+            @if (passwordField.errors?.['minlength']) {
+              La contraseña debe tener al menos 6 caracteres
+            }
+          </div>
+        }
       </div>
 
       <div class="form-group">
@@ -68,29 +133,48 @@
             [type]="showConfirmPassword ? 'text' : 'password'"
             id="confirmPassword"
             name="confirmPassword"
+            #confirmPasswordField="ngModel"
             [(ngModel)]="confirmPassword"
             class="form-input"
             placeholder="••••••••"
             required
+            minlength="6"
           />
           <button
             type="button"
             class="password-toggle"
             (click)="toggleConfirmPassword()"
+            [attr.aria-label]="showConfirmPassword ? 'Ocultar contraseña' : 'Mostrar contraseña'"
           >
-            {{ showConfirmPassword ? '👁️' : '👁️‍🗨️' }}
+            <span aria-hidden="true">{{ showConfirmPassword ? '👁️' : '👁️‍🗨️' }}</span>
           </button>
         </div>
+        @if (confirmPasswordField.touched) {
+          <div class="error-msg" role="alert" aria-live="polite">
+            @if (confirmPasswordField.errors?.['required']) {
+              Debes confirmar tu contraseña
+            }
+            @if (confirmPasswordField.errors?.['minlength']) {
+              La confirmación debe tener al menos 6 caracteres
+            }
+            @if (passwordField.value !== confirmPasswordField.value) {
+              Las contraseñas no coinciden, verifica que sean iguales
+            }
+          </div>
+        }
       </div>
 
       <div class="form-footer">
         <label class="checkbox-label">
-          <input type="checkbox" class="checkbox" [(ngModel)]="acceptTerms" name="acceptTerms">
+          <input type="checkbox" class="checkbox" #acceptTermsField="ngModel" [(ngModel)]="acceptTerms" name="acceptTerms" required />
           <span>Acepto los <a href="#" class="terms-link">términos y condiciones</a></span>
         </label>
+        @if (acceptTermsField.touched && !acceptTermsField.value) {
+          <div class="error-msg" role="alert" aria-live="polite">Debes aceptar los términos y condiciones para registrarte</div>
+        }
       </div>
 
-      <button type="submit" class="btn-submit" [disabled]="isLoading">
+      <button type="submit" class="btn-submit" [disabled]="registerForm.invalid || isLoading">
         <span *ngIf="!isLoading">Crear Cuenta</span>
         <span *ngIf="isLoading" class="loading-spinner">Cargando...</span>
       </button>

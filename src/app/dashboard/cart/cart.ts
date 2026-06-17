@@ -40,6 +40,13 @@ export class Cart {
     this.closeSidebar();
     this.router.navigate(["/dashboard/checkout"]);
   }
+  @HostListener("document:keydown.escape")
+  onEscape() {
+    if (this.open) {
+      this.closeSidebar();
+    }
+  }
+
   @HostListener("document:click", ["$event"])
   handleClickOutside(event: Event) {
     if (this.disableAutoClose) return;

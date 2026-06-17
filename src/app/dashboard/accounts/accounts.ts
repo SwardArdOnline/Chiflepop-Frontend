@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, HostListener } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { FormsModule } from "@angular/forms";
 import { CuentaBancaria } from "../../interfaces/cuentaBancaria";
@@ -51,6 +51,13 @@ export class Accounts implements OnInit {
   openModal() {
     this.showModal = true;
   }
+
+  @HostListener('document:keydown.escape')
+  onEscape() {
+    if (this.showModal) {
+      this.closeModal();
+    }
+  }
   closeModal() {
     this.showModal = false;
   }
@@ -66,11 +73,6 @@ export class Accounts implements OnInit {
   }
   guardarCuenta() {
     const userId = Number(localStorage.getItem('userId'));
-    
-    if (!this.nuevaCuenta.numeroCuenta || this.nuevaCuenta.numeroCuenta.length < 19) {
-      alert("El número de tarjeta debe tener 16 dígitos");
-      return;
-    }
     
     const cuentaParaEnviar = {
       ...this.nuevaCuenta,

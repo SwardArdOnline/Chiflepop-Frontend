@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AdminService } from '../../services/admin-service';
@@ -42,7 +42,6 @@ export class AdminProducts implements OnInit {
 
   editProduct(prod: any) {
     this.isEditing = true;
-    // Copiamos los datos para no editar la tabla en vivo antes de guardar
     this.currentProduct = { ...prod, id: prod.id || prod.productoId }; 
     this.showModal = true;
   }
@@ -57,6 +56,13 @@ export class AdminProducts implements OnInit {
         },
         error: () => alert('No se pudo eliminar (puede que tenga pedidos asociados)')
       });
+    }
+  }
+
+  @HostListener('document:keydown.escape')
+  onEscape() {
+    if (this.showModal) {
+      this.closeModal();
     }
   }
 

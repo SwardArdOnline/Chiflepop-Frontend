@@ -1,26 +1,34 @@
 <div class="auth-container">
   <div class="auth-card">
     <div class="auth-header">
-      <div class="logo" (click)="goToHome()">
-        <span class="logo-icon">🍌</span>
+      <a class="logo" routerLink="/">
+        <span class="logo-icon" aria-hidden="true">🍌</span>
         <span class="logo-text">ChiflePop</span>
-      </div>
+      </a>
       <h1 class="auth-title">Bienvenido de nuevo</h1>
       <p class="auth-subtitle">Inicia sesión para continuar</p>
     </div>
 
-    <form class="auth-form" (ngSubmit)="onSubmit()">
+    <form class="auth-form" #loginForm="ngForm" (ngSubmit)="onSubmit()">
       <div class="form-group">
         <label for="email" class="form-label">Correo Electrónico</label>
         <input
           type="email"
           id="email"
           name="email"
+          #emailField="ngModel"
           [(ngModel)]="email"
           class="form-input"
           placeholder="tu@email.com"
           required
+          pattern="[a-zA-Z0-9._%+\-]+@(gmail\.com|hotmail\.com|outlook\.com|yahoo\.com|icloud\.com|chiflepop\.com)$"
         />
+        @if (emailField.invalid && emailField.touched) {
+          <div class="error-msg" role="alert" aria-live="polite">
+            @if (emailField.errors?.['required']) { El correo electrónico es obligatorio para iniciar sesión }
+            @if (emailField.errors?.['pattern']) { El correo debe ser de Gmail, Hotmail, Outlook, Yahoo o iCloud }
+          </div>
+        }
       </div>
 
       <div class="form-group">
@@ -30,19 +38,28 @@
             [type]="showPassword ? 'text' : 'password'"
             id="password"
             name="password"
+            #passwordField="ngModel"
             [(ngModel)]="password"
             class="form-input"
             placeholder="••••••••"
             required
+            minlength="6"
           />
           <button
             type="button"
             class="password-toggle"
             (click)="togglePassword()"
+            [attr.aria-label]="showPassword ? 'Ocultar contraseña' : 'Mostrar contraseña'"
           >
-            {{ showPassword ? '👁️' : '👁️‍🗨️' }}
+            <span aria-hidden="true">{{ showPassword ? '👁️' : '👁️‍🗨️' }}</span>
           </button>
         </div>
+        @if (passwordField.invalid && passwordField.touched) {
+          <div class="error-msg" role="alert" aria-live="polite">
+            @if (passwordField.errors?.['required']) { La contraseña es obligatoria para iniciar sesión }
+            @if (passwordField.errors?.['minlength']) { La contraseña debe tener al menos 6 caracteres }
+          </div>
+        }
       </div>
 
       <div class="form-footer">
@@ -53,7 +70,7 @@
         <a href="#" class="forgot-link">¿Olvidaste tu contraseña?</a>
       </div>
 
-      <button type="submit" class="btn-submit" [disabled]="isLoading">
+      <button type="submit" class="btn-submit" [disabled]="loginForm.invalid || isLoading">
         <span *ngIf="!isLoading">Iniciar Sesión</span>
         <span *ngIf="isLoading" class="loading-spinner">Cargando...</span>
       </button>

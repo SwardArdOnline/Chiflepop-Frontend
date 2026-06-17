@@ -1,5 +1,5 @@
 <div class="max-w-6xl mx-auto p-6">
-  <h2 class="text-3xl font-bold text-[#33691E] mb-6">📜 Historial de Pedidos</h2>
+  <h2 class="text-3xl font-bold text-[var(--color-text,#33691E)] mb-6">📜 Historial de Pedidos</h2>
 
   @if (loading) {
     <p class="text-center text-gray-500 py-10">Cargando historial...</p>
@@ -22,7 +22,7 @@
               <span class="px-3 py-1 rounded-full text-xs font-bold bg-blue-100 text-blue-700">
                 {{ p.estado }}
               </span>
-              <span class="text-xl font-extrabold text-[#33691E]">S/ {{ p.total.toFixed(2) }}</span>
+              <span class="text-xl font-extrabold text-[var(--color-text,#33691E)]">S/ {{ p.total.toFixed(2) }}</span>
             </div>
           </div>
 

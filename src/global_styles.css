@@ -5,10 +5,145 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ========== ACCESIBILIDAD: CSS Custom Properties ========== */
+:root {
+  --color-bg: #f8fdf4;
+  --color-bg-card: #ffffff;
+  --color-text: #33691E;
+  --color-text-secondary: #558B2F;
+  --color-primary: #7CB342;
+  --color-primary-hover: #689F38;
+  --color-primary-light: #8BC34A;
+  --color-primary-dark: #2E7D32;
+  --color-primary-darker: #1B5E20;
+  --color-accent: #FDD835;
+  --color-accent-hover: #F9A825;
+  --color-accent-dark: #FBC02D;
+  --color-bg-light: #f8fdf4;
+  --color-bg-cream: #fffef0;
+  --color-border: #AED581;
+  --color-border-light: #E8F5E9;
+  --color-error: #dc2626;
+  --color-success: #16a34a;
+  --color-focus-ring: #33691E;
+}
+
+/* ========== ALTO CONTRASTE ========== */
+[data-high-contrast="true"] {
+  --color-bg: #000000;
+  --color-bg-card: #111111;
+  --color-text: #FFFFFF;
+  --color-text-secondary: #CCCCCC;
+  --color-primary: #FFD700;
+  --color-primary-hover: #FFC107;
+  --color-primary-light: #FFD700;
+  --color-primary-dark: #000000;
+  --color-primary-darker: #000000;
+  --color-accent: #FFFFFF;
+  --color-accent-hover: #CCCCCC;
+  --color-accent-dark: #FFD700;
+  --color-bg-light: #000000;
+  --color-bg-cream: #000000;
+  --color-border: #FFFFFF;
+  --color-border-light: #333333;
+  --color-error: #FF6B6B;
+  --color-success: #4CAF50;
+  --color-focus-ring: #FFD700;
+}
+
+[data-high-contrast="true"] body {
+  background: #000000 !important;
+  color: #FFFFFF !important;
+}
+
+[data-high-contrast="true"] img,
+[data-high-contrast="true"] video {
+  filter: brightness(0.8) contrast(1.3);
+}
+
+[data-high-contrast="true"] .cta .btn-primary {
+  color: #000000 !important;
+}
+
+/* ========== TAMAÑO DE TEXTO ========== */
+[data-font-size="large"] {
+  font-size: 120%;
+}
+
+[data-font-size="x-large"] {
+  font-size: 150%;
+}
+
+[data-font-size="large"] body,
+[data-font-size="large"] input,
+[data-font-size="large"] select,
+[data-font-size="large"] textarea,
+[data-font-size="large"] button {
+  font-size: 1.2em;
+}
+
+[data-font-size="x-large"] body,
+[data-font-size="x-large"] input,
+[data-font-size="x-large"] select,
+[data-font-size="x-large"] textarea,
+[data-font-size="x-large"] button {
+  font-size: 1.5em;
+}
+
+/* ========== MOSTRAR ALT TEXT ========== */
+[data-show-alt-text="true"] img[alt]:not([alt=""]) {
+  position: relative;
+  display: inline-block;
+}
+
+[data-show-alt-text="true"] img[alt]:not([alt=""])::after {
+  content: attr(alt);
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(0, 0, 0, 0.85);
+  color: #fff;
+  font-size: 12px;
+  padding: 4px 8px;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  z-index: 1;
+}
+
+/* ========== MODO LECTOR / FOCO VISIBLE ========== */
+[data-screen-reader="true"] *:focus {
+  outline: 3px solid var(--color-focus-ring, #33691E) !important;
+  outline-offset: 2px !important;
+}
+
+[data-screen-reader="true"] button:focus,
+[data-screen-reader="true"] a:focus,
+[data-screen-reader="true"] input:focus,
+[data-screen-reader="true"] select:focus,
+[data-screen-reader="true"] textarea:focus {
+  outline: 3px solid var(--color-focus-ring, #33691E) !important;
+  outline-offset: 2px !important;
+}
+
+/* ========== prefers-reduced-motion ========== */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
 /* Base styles (migrados de los originales) */
 body {
   font-family: 'Inter', sans-serif;
-  @apply bg-[#f8fdf4] text-[#33691E] antialiased min-h-screen;
+  @apply bg-[var(--color-bg)] text-[var(--color-text)] antialiased min-h-screen;
 }
 
 html, body {
@@ -24,10 +159,31 @@ html, body {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #7CB342;
+  background: var(--color-primary, #7CB342);
   border-radius: 5px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #689F38;
+  background: var(--color-primary-hover, #689F38);
+}
+
+/* ========== SKIP-TO-CONTENT LINK ========== */
+.a11y-skip-link {
+  position: absolute;
+  top: -100%;
+  left: 0;
+  z-index: 10000;
+  background: var(--color-primary, #7CB342);
+  color: #fff;
+  padding: 12px 24px;
+  font-weight: 700;
+  text-decoration: none;
+  border-radius: 0 0 8px 0;
+  transition: top 0.2s;
+}
+
+.a11y-skip-link:focus {
+  top: 0;
+  outline: 3px solid var(--color-focus-ring, #33691E);
+  outline-offset: 2px;
 }
