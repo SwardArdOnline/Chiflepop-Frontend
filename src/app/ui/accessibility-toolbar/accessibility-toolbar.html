@@ -66,6 +66,18 @@
 
       <button
         type="button"
+        class="a11y-btn"
+        [class.active]="a11y.dyslexiaFont()"
+        (click)="a11y.toggleDyslexiaFont(); $event.stopPropagation()"
+        aria-label="Activar fuente legible para dislexia"
+      >
+        <span class="a11y-btn-icon" aria-hidden="true">Aa</span>
+        <span class="a11y-btn-label">Fuente Legible</span>
+        <span class="a11y-btn-status">{{ a11y.dyslexiaFont() ? 'Activado' : 'Desactivado' }}</span>
+      </button>
+
+      <button
+        type="button"
         class="a11y-btn a11y-btn-reset"
         (click)="a11y.resetAll(); $event.stopPropagation()"
         aria-label="Restablecer ajustes de accesibilidad"

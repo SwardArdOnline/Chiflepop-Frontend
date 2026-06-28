@@ -12,6 +12,7 @@ export class AccessibilityService {
   fontSize = signal<FontSize>('normal');
   showAltText = signal(false);
   screenReaderMode = signal(false);
+  dyslexiaFont = signal(false);
 
   constructor() {
     this.loadFromStorage();
@@ -42,11 +43,17 @@ export class AccessibilityService {
     this.saveToStorage();
   }
 
+  toggleDyslexiaFont(): void {
+    this.dyslexiaFont.update(v => !v);
+    this.saveToStorage();
+  }
+
   resetAll(): void {
     this.highContrast.set(false);
     this.fontSize.set('normal');
     this.showAltText.set(false);
     this.screenReaderMode.set(false);
+    this.dyslexiaFont.set(false);
     this.saveToStorage();
   }
 
@@ -56,6 +63,7 @@ export class AccessibilityService {
     html.setAttribute('data-font-size', this.fontSize());
     html.setAttribute('data-show-alt-text', String(this.showAltText()));
     html.setAttribute('data-screen-reader', String(this.screenReaderMode()));
+    html.setAttribute('data-dyslexia-font', String(this.dyslexiaFont()));
   }
 
   private saveToStorage(): void {
@@ -64,6 +72,7 @@ export class AccessibilityService {
       fontSize: this.fontSize(),
       showAltText: this.showAltText(),
       screenReaderMode: this.screenReaderMode(),
+      dyslexiaFont: this.dyslexiaFont(),
     };
     localStorage.setItem(this.STORAGE_KEY, JSON.stringify(state));
   }
@@ -77,6 +86,7 @@ export class AccessibilityService {
       this.fontSize.set(state.fontSize ?? 'normal');
       this.showAltText.set(state.showAltText ?? false);
       this.screenReaderMode.set(state.screenReaderMode ?? false);
+      this.dyslexiaFont.set(state.dyslexiaFont ?? false);
     } catch {
       /* ignore corrupt data */
     }
